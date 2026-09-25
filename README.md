@@ -1,3 +1,5 @@
+> **Digital library:** The new public reader and PostgreSQL library studio are documented in [docs/DIGITAL_LIBRARY.md](docs/DIGITAL_LIBRARY.md), including source coverage, setup, API contracts, and Railway deployment.
+
 # Anandham Monorepo
 
 > Enterprise-grade monorepo powering the Anandham platform — 3 Flutter mobile apps (Android & iOS) + 3 Next.js web applications, managed with Turborepo.

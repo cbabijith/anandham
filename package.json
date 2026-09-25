@@ -19,13 +19,22 @@
     "dev:web-admin": "turbo run dev --filter=@anandham/web-admin",
     "build:web-user": "turbo run build --filter=@anandham/web-user",
     "build:web-author": "turbo run build --filter=@anandham/web-author",
-    "build:web-admin": "turbo run build --filter=@anandham/web-admin"
+    "build:web-admin": "turbo run build --filter=@anandham/web-admin",
+    "db:setup": "npm run db:setup -w @anandham/library",
+    "db:generate": "npm run db:generate -w @anandham/library",
+    "test:library": "npm test -w @anandham/library",
+    "test:library:e2e": "playwright test"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/abijithsupportta/anandham.git"
   },
-  "keywords": ["monorepo", "turborepo", "nextjs", "flutter"],
+  "keywords": [
+    "monorepo",
+    "turborepo",
+    "nextjs",
+    "flutter"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -34,6 +43,7 @@
   "homepage": "https://github.com/abijithsupportta/anandham#readme",
   "packageManager": "npm@11.6.2",
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "turbo": "^2.8.9"
   }
 }

@@ -1,0 +1,14 @@
+.git/
+**/node_modules/
+**/.next/
+**/.env*
+.env*
+.private/
+**/*.tsbuildinfo
+test-results/
+playwright-report/
+apps/mobile*/
+packages/flutter_core/
+*.aab
+*.jks
+recovery/

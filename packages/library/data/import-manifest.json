@@ -1,0 +1,491 @@
+{
+  "sourceUrl": "https://sivagiri.com/gurudevakrithikal",
+  "fetchedAt": "2026-09-24T16:16:29.801967+00:00",
+  "catalogueCount": 60,
+  "importedCount": 60,
+  "failedCount": 0,
+  "categories": 10,
+  "notes": "Original literary text as supplied by Sivagiri. English aliases are search aids, not translations. Modern commentary and recordings are not copied. Completeness is against this catalogue, not a critical edition of the collected works.",
+  "entries": [
+    {
+      "sourceId": 1,
+      "title": "വിനായകാഷ്ടകം",
+      "slug": "vinayakashtakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=1",
+      "sourceHash": "4ac9a6291c44982410504e9b589d03b721381633f0aab6b734eaf590bdd5792d",
+      "characters": 995
+    },
+    {
+      "sourceId": 4,
+      "title": "ദേവീസ്തവം",
+      "slug": "devi-sthavam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=4",
+      "sourceHash": "23d083a1a4c6bb78356e9d2d7f4e1181c17c9efcc2c2890eec567997619c93a8",
+      "characters": 1434
+    },
+    {
+      "sourceId": 5,
+      "title": "മണ്ണന്തലദേവീസ്തവം",
+      "slug": "mannanthala-devi-sthavam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=5",
+      "sourceHash": "1c909dfe751b3f51853822688e37a951ef684d2af88152417984a17b040dac0a",
+      "characters": 1761
+    },
+    {
+      "sourceId": 6,
+      "title": "കാളീനാടകം",
+      "slug": "kali-natakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=6",
+      "sourceHash": "bc61ac8eef82593f79a000eb142b44db33866d975a76bb08eb502a22ba08ce86",
+      "characters": 4204
+    },
+    {
+      "sourceId": 9,
+      "title": "ജനനീ നവരത്ന മഞ്ജരി",
+      "slug": "janani-navaratna-manjari",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=9",
+      "sourceHash": "b09dfb6ac6763e2e0fd8727da940dcdb187ba165cb01c3313d92fae8329acd73",
+      "characters": 1912
+    },
+    {
+      "sourceId": 10,
+      "title": "ഭദ്രകാള്യഷ്ടകം",
+      "slug": "bhadrakalyashtakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=10",
+      "sourceHash": "0e23c9105ae6110fd32159b0615da8772cd1e0ca984f794ff2c7152050b95986",
+      "characters": 1612
+    },
+    {
+      "sourceId": 25,
+      "title": "ദേവീപ്രണാമദേവ്യഷ്ടകം",
+      "slug": "devi-pranama-devyashtakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=25",
+      "sourceHash": "361970f73a470e069f7949af4f4b4089cb482c6f329eaf2dca68a92674dc60e1",
+      "characters": 1321
+    },
+    {
+      "sourceId": 7,
+      "title": "ഗുഹാഷ്ടകം",
+      "slug": "guhashtakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=7",
+      "sourceHash": "027195626de611c60026c605c4f31572a5994bc4505b4577d50cba30eb3a184f",
+      "characters": 1374
+    },
+    {
+      "sourceId": 8,
+      "title": "ബാഹുലേയാഷ്ടകം",
+      "slug": "bahuleyashtakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=8",
+      "sourceHash": "eb1e3907790651e30d91442b405c8d5806f359abecf9ac2c93129399e1c714a9",
+      "characters": 1671
+    },
+    {
+      "sourceId": 11,
+      "title": "ഷണ്മുഖസ്‌തോത്രം",
+      "slug": "shanmukha-sthothram",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=11",
+      "sourceHash": "4297d8d5c433b343458bd4b41f4bb8b44c1603cea9fc1e0d03c6b75bd2dc5704",
+      "characters": 3424
+    },
+    {
+      "sourceId": 12,
+      "title": "ഷണ്മുഖദശകം",
+      "slug": "shanmukha-dasakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=12",
+      "sourceHash": "33e0a73537243df8fd7021e8affc6f28aadd28bf40f12785db0dbabc2cfd2087",
+      "characters": 2503
+    },
+    {
+      "sourceId": 13,
+      "title": "സുബ്രമണ്യകീർത്തനം",
+      "slug": "subrahmanya-keerthanam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=13",
+      "sourceHash": "844afce7dfc28ceba3e894fa7870f1d736405fbf71531e37f5746eb0dafcbbdc",
+      "characters": 3651
+    },
+    {
+      "sourceId": 14,
+      "title": "നവമഞ്ജരി",
+      "slug": "navamanjari",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=14",
+      "sourceHash": "4fcb1e7595c7ab2d4b532fccd6285cfb4f39d8c8b0966181d4b2aaa48492428e",
+      "characters": 1964
+    },
+    {
+      "sourceId": 27,
+      "title": "ഷണ്മാതുരസ്തവം",
+      "slug": "shanmathura-sthavam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=27",
+      "sourceHash": "6dcaf7af96745b4ed11b51a0336d84152e47a13fb4953f0cb4a05cc5edacf693",
+      "characters": 1688
+    },
+    {
+      "sourceId": 15,
+      "title": "ശിവപ്രസാദപഞ്ചകം",
+      "slug": "siva-prasada-panchakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=15",
+      "sourceHash": "45f8e86f7e7842d7c401aa5c16e13e3860a0a1690be696f89a5e9dce53b8bede",
+      "characters": 615
+    },
+    {
+      "sourceId": 16,
+      "title": "സദാശിവദർശനം",
+      "slug": "sadasiva-darsanam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=16",
+      "sourceHash": "5a3cbad69ee22c8126d9e0a375bce6e8b08609da6b2276c72304ba2951831c3d",
+      "characters": 1802
+    },
+    {
+      "sourceId": 17,
+      "title": "ശിവശതകം",
+      "slug": "siva-sathakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=17",
+      "sourceHash": "8c8c56f2c1bcead34d95c9de39228c96fe77214bb2a2ad4d8887f3072aa7ee52",
+      "characters": 11519
+    },
+    {
+      "sourceId": 18,
+      "title": "അർദ്ധനാരീസ്തവം",
+      "slug": "ardhanareeswara-sthavam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=18",
+      "sourceHash": "ca09c01fc714de7b8943793dfcfc4a12c56377d08677768b1540ecd0c360a93d",
+      "characters": 1110
+    },
+    {
+      "sourceId": 19,
+      "title": "മനനാതീതം",
+      "slug": "mananatheetham",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=19",
+      "sourceHash": "b4af194abd0095b3e7d034092fea467fd7c173ffde532bbc259c27f6281b974c",
+      "characters": 1461
+    },
+    {
+      "sourceId": 20,
+      "title": "ചിജ്ജഡചിന്തനം",
+      "slug": "chijjada-chinthanam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=20",
+      "sourceHash": "c8eed4dda1a690ba04fc94ba52cb3d12a48ff3a63187c2813a8a3f7392c94cf8",
+      "characters": 1162
+    },
+    {
+      "sourceId": 21,
+      "title": "കുണ്ഡലിനീപാട്ട്",
+      "slug": "kundalini-pattu",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=21",
+      "sourceHash": "27610e9f209202184ed2b17a11640355c4f5cb03667841348b2566b23b9625f6",
+      "characters": 1341
+    },
+    {
+      "sourceId": 22,
+      "title": "ഇന്ദ്രിയവൈരാഗ്യം",
+      "slug": "indriya-vairagyam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=22",
+      "sourceHash": "d786e9c092aabb1cd38d7dfe7d69a1fae72a779bc75f9826ed6c02fdd9300e17",
+      "characters": 1598
+    },
+    {
+      "sourceId": 23,
+      "title": "ശിവസ്തവം(പ്രപഞ്ച സൃഷ്ടി)",
+      "slug": "siva-sthavam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=23",
+      "sourceHash": "59f28a19784b083790854a30c647b3216c0119dd51e9eb64e35c94fb53f0d406",
+      "characters": 1609
+    },
+    {
+      "sourceId": 24,
+      "title": "കോലതിരേശസ്‌തവം",
+      "slug": "kolathiresa-sthavam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=24",
+      "sourceHash": "b1545861f7f10c0fc752987ff6461ef9b28af0bef0b105f0d621729869d72bf1",
+      "characters": 1478
+    },
+    {
+      "sourceId": 28,
+      "title": "സ്വാനുഭവഗീതി",
+      "slug": "swanubhava-geethi",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=28",
+      "sourceHash": "34d334d8df6b06c2739654d87e25a9cce60a4ac14df8c1e2807f32363b98c0ae",
+      "characters": 6886
+    },
+    {
+      "sourceId": 29,
+      "title": "പിണ്ഡനന്ദി",
+      "slug": "pinda-nandi",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=29",
+      "sourceHash": "84e4164a2c9a985a17419ba138008bc6fcd31af26690cca95f42a785d39f8a98",
+      "characters": 1406
+    },
+    {
+      "sourceId": 30,
+      "title": "ചിദംബരാഷ്ടകം",
+      "slug": "chidambarashtakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=30",
+      "sourceHash": "64cb19daaec6d6d937b5ef3a00ed69f3c6fb5699e5f2e819505ecbbadbc22a12",
+      "characters": 821
+    },
+    {
+      "sourceId": 31,
+      "title": "തേവരപതികൻകൾ",
+      "slug": "thevara-pathikangal",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=31",
+      "sourceHash": "e887f15f890d8f834e2ddccb4facb08fbd71cd93d27ad24b13d557c77f78c5de",
+      "characters": 9485
+    },
+    {
+      "sourceId": 32,
+      "title": "ഒരു തമിഴ് ശ്ലോകം",
+      "slug": "oru-tamil-slokam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=32",
+      "sourceHash": "398b987e2ab5798b39d8a6cad20945dfb497107082360d41672fc1c5fe224055",
+      "characters": 241
+    },
+    {
+      "sourceId": 2,
+      "title": "വാസുദേവാഷ്ടകം",
+      "slug": "vasudevashtakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=2",
+      "sourceHash": "558bdfbcda0280453d9978b3d0a95c55bc239b2534cf1da467c0ae30e92f27b9",
+      "characters": 980
+    },
+    {
+      "sourceId": 3,
+      "title": "വിഷ്ണ്വഷ്ടകം",
+      "slug": "vishnvashtakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=3",
+      "sourceHash": "ef25f81ada89fe8b75086bec193b20928466d042145e509a113d0caa55604645",
+      "characters": 994
+    },
+    {
+      "sourceId": 26,
+      "title": "ശ്രീ കൃഷ്ണ ദർശനം",
+      "slug": "sree-krishna-darsanam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=26",
+      "sourceHash": "07e9dbe9c27598983d3c44421f4972d0116049482f5d99317bd7b052b0b88a55",
+      "characters": 222
+    },
+    {
+      "sourceId": 33,
+      "title": "ജാതി നിർണയം",
+      "slug": "jathi-nirnayam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=33",
+      "sourceHash": "20eb0401646f98775fc9d2dc97e0a74d4a58ebf5a84c17f834eb6ceeee9d04d6",
+      "characters": 547
+    },
+    {
+      "sourceId": 34,
+      "title": "ജാതി ലക്ഷണം",
+      "slug": "jathi-lakshanam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=34",
+      "sourceHash": "784f7bedd481ecc4286d60b87eab5b51d4a015d52d09b41a2857fbb0c0e33505",
+      "characters": 956
+    },
+    {
+      "sourceId": 35,
+      "title": "സദാചാരം",
+      "slug": "sadacharam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=35",
+      "sourceHash": "a05ef532be5966b19d94242206c3d66fd61cb0bc40a333da35fb579bb974ca9d",
+      "characters": 699
+    },
+    {
+      "sourceId": 36,
+      "title": "ജീവകാരുണ്യ പഞ്ചകം",
+      "slug": "jeevakarunya-panchakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=36",
+      "sourceHash": "2aa27cd9fe0dba475433d4e644adea352bb2752056a039c1e5e6450922e59933",
+      "characters": 638
+    },
+    {
+      "sourceId": 37,
+      "title": "അനുകമ്പാദശകം",
+      "slug": "anukampa-dasakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=37",
+      "sourceHash": "f15ca5b0194ffd67038c948eb38c38cb499c43045ae87e3627962d5cd4300ccf",
+      "characters": 1231
+    },
+    {
+      "sourceId": 38,
+      "title": "ആശ്രമം",
+      "slug": "asramam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=38",
+      "sourceHash": "0987016b4eca99fb5381a5c15389816a06176619d89593228bc931ac329cd4c8",
+      "characters": 1954
+    },
+    {
+      "sourceId": 39,
+      "title": "ധർമ്മം:",
+      "slug": "dharmam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=39",
+      "sourceHash": "0614762259a6f91a477d54050caddde25a72ae71461f68a79fe1c54576886d60",
+      "characters": 92
+    },
+    {
+      "sourceId": 40,
+      "title": "ആത്മോപദേശശതകം",
+      "slug": "atmopadesa-sathakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=40",
+      "sourceHash": "4b43b5002fa1370b6df7c4ea807f93add486e8183e212df081b2907b64e91325",
+      "characters": 13035
+    },
+    {
+      "sourceId": 41,
+      "title": "അദ്വൈതദീപിക",
+      "slug": "advaita-deepika",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=41",
+      "sourceHash": "715d18c13cca1cf424fd1b164e7383b332c514f68452d1488fbed246bf07f6e0",
+      "characters": 2844
+    },
+    {
+      "sourceId": 42,
+      "title": "അറിവ്",
+      "slug": "arivu",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=42",
+      "sourceHash": "beb2ac556977bec57bdcfce018eb70b1298f7e4e00dd5880095bc506400a6d9b",
+      "characters": 1644
+    },
+    {
+      "sourceId": 43,
+      "title": "ദൈവദശകം",
+      "slug": "daiva-dasakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=43",
+      "sourceHash": "a1f8690e7c4ca2aea2e7b7609f16280a2d743a41023d7c56844f1568618731d5",
+      "characters": 922
+    },
+    {
+      "sourceId": 44,
+      "title": "ദർശനമാല",
+      "slug": "darsana-mala",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=44",
+      "sourceHash": "4e6078f3c138fc2135705fffd452d211687a5782f402f4afe1f319c1b686b532",
+      "characters": 8857
+    },
+    {
+      "sourceId": 45,
+      "title": "ബ്രഹ്മവിദ്യ പഞ്ചകം",
+      "slug": "brahmavidya-panchakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=45",
+      "sourceHash": "b4d275d21097e0c9f86d32840b7faa9c33f2426493178bd962093977e6c50af3",
+      "characters": 1075
+    },
+    {
+      "sourceId": 46,
+      "title": "മുനിചര്യ പഞ്ചകം",
+      "slug": "municharya-panchakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=46",
+      "sourceHash": "9fd6963ef13670fd2f8a0ac9f5a7f099529b7027534c6f9b3a23bf7c4fc4cb4e",
+      "characters": 808
+    },
+    {
+      "sourceId": 47,
+      "title": "നിർവൃതി പഞ്ചകം",
+      "slug": "nirvrithi-panchakam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=47",
+      "sourceHash": "168bef96a1948343398a5d0a77fdd62031f30d58a88e8303b53447dd5fa637c3",
+      "characters": 466
+    },
+    {
+      "sourceId": 48,
+      "title": "ശ്ലോകത്രയീ",
+      "slug": "sloka-thrayi",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=48",
+      "sourceHash": "7efc8291cb52d0903a0f0ef54d39c381697d6b1ce72a640e9727ae3671b64360",
+      "characters": 276
+    },
+    {
+      "sourceId": 49,
+      "title": "ഹോമ മന്ത്രം",
+      "slug": "homa-manthram",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=49",
+      "sourceHash": "34013852fab8aec06e99723cabe31d71c2ebcb74b26f8a759c746ee9d33bc54f",
+      "characters": 256
+    },
+    {
+      "sourceId": 50,
+      "title": "വേദാന്ത സൂത്രം",
+      "slug": "vedanta-suthram",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=50",
+      "sourceHash": "73b480b0f796bb15b195aa9f0bfd7ab360672ac4e095a5e29526baa5aeb2e833",
+      "characters": 745
+    },
+    {
+      "sourceId": 51,
+      "title": "ഈശാവാസ്യോപനിഷത്",
+      "slug": "isavasya-upanishad",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=51",
+      "sourceHash": "b37a9d053a882c9d7f9e577eb4b983deab64dfa46838830fc2b5b080d518768a",
+      "characters": 2133
+    },
+    {
+      "sourceId": 52,
+      "title": "തിരുക്കുറൾ",
+      "slug": "thirukkural",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=52",
+      "sourceHash": "84bdd2f164e841ecb5631d621a9c1d98cdc607e09560142c344ee40c1d50c5e8",
+      "characters": 3777
+    },
+    {
+      "sourceId": 53,
+      "title": "ഗദ്യ പ്രാർത്ഥന",
+      "slug": "gadya-prarthana",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=53",
+      "sourceHash": "52788fe70269221f007b40baef0d77a28c6ea39bc69ec4e4d7fa6f003303278d",
+      "characters": 1288
+    },
+    {
+      "sourceId": 54,
+      "title": "ദൈവ ചിന്തനം 1",
+      "slug": "daiva-chinthanam-1",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=54",
+      "sourceHash": "ef93d7ee5d647817a797a61fafffc1cfdc4876d36bcd3ef71d1a7ecbf6390e15",
+      "characters": 9548
+    },
+    {
+      "sourceId": 55,
+      "title": "ദൈവ ചിന്തനം 2",
+      "slug": "daiva-chinthanam-2",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=55",
+      "sourceHash": "5bc9563b8fdc93b65e2c38f872a9671eeaf4536c4673d82f082bac7a37a0ee17",
+      "characters": 2562
+    },
+    {
+      "sourceId": 56,
+      "title": "ആത്മ വിലാസം",
+      "slug": "atma-vilasam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=56",
+      "sourceHash": "0e9662b521b3f3c96ccd925fc846e687c2105244c816eccf2b3ce998427372c6",
+      "characters": 6006
+    },
+    {
+      "sourceId": 57,
+      "title": "ചിജ്ജഡ ചിന്തനം",
+      "slug": "chijjada-chinthanam-prose",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=57",
+      "sourceHash": "ab161fbfa6d46ee7a7f05e03dbed65d19622f73ace9496a372381d9b3ef8fcb2",
+      "characters": 7262
+    },
+    {
+      "sourceId": 58,
+      "title": "മംഗളാശംസകൾ",
+      "slug": "mangalasamsakal",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=58",
+      "sourceHash": "fbe8166ba33af92cdf1722638c1b5610415cc3427285234e45d863c575688e36",
+      "characters": 392
+    },
+    {
+      "sourceId": 59,
+      "title": "സമസ്യാപൂരണം",
+      "slug": "samasya-pooranam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=59",
+      "sourceHash": "f4e7935deb3fce70225c2c20cb63f32751b8dff824b483da0fa124f884099329",
+      "characters": 767
+    },
+    {
+      "sourceId": 60,
+      "title": "സമാധി ശ്ലോകം",
+      "slug": "samadhi-slokam",
+      "sourceUrl": "https://sivagiri.com/krithikal-lyrics?id=60",
+      "sourceHash": "92edf15e38e5062ece08f18e1664b34056b0103964a34b0a9b81a8939814532f",
+      "characters": 251
+    }
+  ]
+}
