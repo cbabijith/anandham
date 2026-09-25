@@ -151,10 +151,23 @@ railway service source connect --repo cbabijith/anandham --branch codex/guru-dig
 railway service source connect --repo cbabijith/anandham --branch codex/guru-digital-library --service web-user --environment production
 ```
 
-Push reviewed changes to that branch to deploy both services. Application
-variables, database connections, health checks and the studio migration command
-stay configured in Railway. Do not change the source to the legacy `main` branch
-until this library branch has been merged there.
+Automatic push deployment is not enabled: the connected Railway account can
+build the public repository but cannot create its GitHub deployment triggers;
+Railway also denies production token creation for a GitHub Actions workflow.
+Authorize this repository in the Railway account's GitHub integration to enable
+push triggers. Until then, commit and push the library branch, then deploy the
+reviewed GitHub commit through the authenticated Railway CLI:
+
+```sh
+railway api 'mutation { serviceInstanceDeploy(environmentId: "9be4cd86-0fa9-47d2-a6db-1bcdf9d31fb9", serviceId: "041c876c-324c-4cce-9b5c-3a0897e11c7a", commitSha: "REVIEWED_GIT_COMMIT_SHA") }'
+railway api 'mutation { serviceInstanceDeploy(environmentId: "9be4cd86-0fa9-47d2-a6db-1bcdf9d31fb9", serviceId: "c082b9f2-5934-42c6-baf9-c52fec6f137f", commitSha: "REVIEWED_GIT_COMMIT_SHA") }'
+```
+
+Replace the placeholder with `git rev-parse HEAD` from the pushed branch. Deploy
+the studio first and wait for its health check before deploying the reader.
+Application variables, database connections, health checks and the studio
+migration command remain configured in Railway. Do not change the source to the
+legacy `main` branch until this library branch has been merged there.
 
 For emergency local uploads:
 
