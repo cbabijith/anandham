@@ -1,65 +1,136 @@
-import Image from "next/image";
-
-export default function Home() {
+import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowDown, ArrowUpRight, BookOpen, Sparkles } from 'lucide-react';
+import { listKrithis, summarize } from '@anandham/library/repository';
+import { SiteHeader } from '@/features/library/site-header';
+import { Collection } from '@/features/library/collection';
+export const dynamic = 'force-dynamic';
+export default async function Home() {
+  const works = (await listKrithis())
+    .map(summarize)
+    .map(({ createdAt: _created, updatedAt: _updated, ...work }) => {
+      void _created;
+      void _updated;
+      return work;
+    });
+  const categoryCount = new Set(works.map((k) => k.category)).size;
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      <SiteHeader />
+      <main id="main-content">
+        <section className="hero section-container">
+          <div className="hero-copy">
+            <span className="eyebrow">
+              <span className="tiny-sun">✳</span> A DIGITAL LIBRARY FOR EVERYONE
+            </span>
+            <h1>
+              Timeless words.
+              <br />
+              An <em>awakened</em> world.
+            </h1>
+            <p className="hero-subtitle" lang="ml">
+              അറിവിന്റെ വെളിച്ചത്തിലേക്ക്.
+            </p>
+            <p className="hero-description">
+              Discover the collected writings of Sree Narayana Guru.
+              <br className="desktop-break" /> A quiet space to read, reflect, and find your own
+              meaning.
+            </p>
+            <div className="hero-actions">
+              <a className="button button-primary" href="#collection">
+                Explore the collection <ArrowDown size={17} />
+              </a>
+              <Link className="text-link" href="/krithis/daiva-dasakam">
+                Begin with Daiva Dasakam <ArrowUpRight size={16} />
+              </Link>
+            </div>
+            <div className="hero-stats">
+              <span>
+                <strong>{works.length}</strong> Original works
+              </span>
+              <i />
+              <span>
+                <strong>{categoryCount}</strong> Collections
+              </span>
+              <i />
+              <span>
+                <BookOpen size={17} /> Free to read
+              </span>
+            </div>
+          </div>
+          <div className="hero-art">
+            <div className="portrait-ring ring-one" />
+            <div className="portrait-ring ring-two" />
+            <span className="art-caption">KNOWLEDGE · COMPASSION · ONENESS</span>
+            <div className="portrait-shell">
+              <Image
+                src="/images/sree-narayana-guru-original.png"
+                alt="Original photograph of Sree Narayana Guru seated in a chair, wearing white robes"
+                width={162}
+                height={299}
+                preload
+                unoptimized
+                className="guru-portrait"
+              />
+            </div>
+            <div className="portrait-label">
+              <span>Sree Narayana Guru</span>
+              <small>1855 — 1928</small>
+            </div>
+            <span className="art-flower">✳</span>
+          </div>
+        </section>
+        <div className="wisdom-strip">
+          <span>“</span>
+          <p lang="ml">ഒരു ജാതി, ഒരു മതം, ഒരു ദൈവം മനുഷ്യന്.</p>
+          <small>ONE CASTE, ONE RELIGION, ONE GOD FOR HUMANITY</small>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+        <Collection works={works} />
+        <section id="about" className="about-section section-container">
+          <div>
+            <span className="eyebrow">THE TEACHER. THE VISION.</span>
+            <h2>
+              Wisdom that
+              <br />
+              belongs to everyone.
+            </h2>
+          </div>
+          <div>
+            <Sparkles className="accent" size={26} />
+            <p>
+              Sree Narayana Guru was a poet, philosopher, and social reformer from Kerala. His
+              writings invite us to look beyond divisions and live with knowledge, compassion, and
+              human dignity.
+            </p>
+            <p>
+              This library brings together every entry in Sivagiri Mutt’s Gurudeva Krithikal
+              catalogue, with the original text and a source link for each work. English titles help
+              you find a work; the writings are presented in the source’s Malayalam script.
+            </p>
+            <a
+              className="text-link"
+              href="https://sivagiri.com/gurudevakrithikal"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Visit the source collection <ArrowUpRight size={16} />
+            </a>
+          </div>
+        </section>
       </main>
-    </div>
+      <footer className="site-footer section-container">
+        <Link href="/" className="footer-brand" aria-label="Anandham home">
+          <Image
+            src="/images/anandham-brand.png"
+            alt="Anandham Channel"
+            width={2063}
+            height={688}
+            sizes="210px"
+          />
+        </Link>
+        <p>Read. Reflect. Return.</p>
+        <span>A tribute to the wisdom of Sree Narayana Guru</span>
+      </footer>
+    </>
   );
 }

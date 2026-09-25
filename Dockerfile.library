@@ -1,0 +1,19 @@
+FROM node:24-bookworm-slim AS build
+WORKDIR /app
+ARG LIBRARY_APP=web-user
+ENV NEXT_TELEMETRY_DISABLED=1
+COPY package.json package-lock.json ./
+COPY packages ./packages
+COPY apps/web-user ./apps/web-user
+COPY apps/web-admin ./apps/web-admin
+COPY apps/web-author/package.json ./apps/web-author/package.json
+COPY apps/gurusmruthi/package.json ./apps/gurusmruthi/package.json
+RUN npm ci --include=dev --workspace=@anandham/library --workspace=@anandham/${LIBRARY_APP} --include-workspace-root
+RUN npm run build --workspace=@anandham/${LIBRARY_APP}
+RUN chown -R node:node apps/${LIBRARY_APP}/.next
+ENV NODE_ENV=production
+ENV LIBRARY_APP=${LIBRARY_APP}
+ENV PORT=3000
+EXPOSE 3000
+USER node
+CMD ["sh", "-c", "npm run start --workspace=@anandham/${LIBRARY_APP} -- --hostname 0.0.0.0 --port ${PORT:-3000}"]

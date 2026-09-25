@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 import * as path from "path";
-import { Client, Databases, ID, IndexType } from "node-appwrite";
+import { Client, Databases, ID, DatabasesIndexType as IndexType } from "node-appwrite";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env.local") });
 

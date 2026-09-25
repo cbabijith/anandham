@@ -86,3 +86,9 @@ yarn-error.log*
 # ==========================
 *.tgz
 .cache/
+
+# Local library verification and credentials
+.private/
+test-results/
+playwright-report/
+*.tsbuildinfo

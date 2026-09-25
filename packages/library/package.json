@@ -1,0 +1,23 @@
+{
+  "name": "@anandham/library",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:setup": "tsx scripts/setup.ts",
+    "test": "tsx --test src/*.test.ts"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.45.3",
+    "postgres": "^3.4.7",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.5",
+    "tsx": "^4.21.0"
+  }
+}
