@@ -4,7 +4,8 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { getDb, getSql } from '../src/db';
 import { bootstrapAdmin } from '../src/auth';
-import { krithis, imports } from '../src/schema';
+import { krithis, imports, dharmamChapters } from '../src/schema';
+import { dharmamInput } from '../src/dharmam-validation';
 
 try {
   const db = getDb();
@@ -28,17 +29,31 @@ try {
       .onConflictDoNothing()
       .returning({ id: krithis.id });
     if (added.length)
-      await tx
-        .insert(imports)
-        .values({
-          id: randomUUID(),
-          sourceUrl: manifest.sourceUrl,
-          sourceCount: rows.length,
-          insertedCount: added.length,
-          manifest,
-        });
+      await tx.insert(imports).values({
+        id: randomUUID(),
+        sourceUrl: manifest.sourceUrl,
+        sourceCount: rows.length,
+        insertedCount: added.length,
+        manifest,
+      });
     return added.length;
   });
+  const dharmamRows = JSON.parse(
+    await readFile(new URL('../data/dharmam.json', import.meta.url), 'utf8'),
+  ) as Array<typeof dharmamChapters.$inferInsert>;
+  const dharmamAdded = await db
+    .insert(dharmamChapters)
+    .values(
+      dharmamRows.map((row) => ({
+        ...dharmamInput.parse(row),
+        id: row.id,
+        sourceLabel: row.sourceLabel,
+        sourcePassages: row.passages,
+      })),
+    )
+    .onConflictDoNothing()
+    .returning({ id: dharmamChapters.id });
+  console.log(`${dharmamAdded.length} Dharmam chapters inserted; existing edits preserved.`);
   if (process.env.LIBRARY_ADMIN_EMAIL && process.env.LIBRARY_ADMIN_PASSWORD)
     await bootstrapAdmin(process.env.LIBRARY_ADMIN_EMAIL, process.env.LIBRARY_ADMIN_PASSWORD);
   console.log(

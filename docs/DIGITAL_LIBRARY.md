@@ -220,3 +220,51 @@ The hero uses the user-supplied original photograph as
 `apps/web-user/public/images/sree-narayana-guru-original.png`. Its original
 162×299 pixels, colours and full portrait are retained without AI alterations,
 colour blending, or cropping. Rendering preserves its aspect ratio.
+
+## Sree Narayana Dharmam — first five chapters
+
+The reader now has a separate `/dharmam` collection and `/dharmam/:slug` reader.
+The homepage and header link to it. The first five titles are taken from the
+owner's screenshots: Arambham, Varkala Varnnana, Sivagiri Varnnana, Guru Varnnana,
+and Dharmadharma Vivechanam. Their complete supplied verses and Malayalam
+explanations are preserved separately in `packages/library/data/dharmam.json`.
+The title joined to the start of the second chapter's first verse is rendered as
+the chapter heading. No additional chapters or missing text have been invented.
+
+Chapters 4 and 5 intentionally contain the same supplied verses 11–13 and
+explanations: the owner explicitly confirmed publishing them under both titles.
+That confirmation is retained in a private editorial note. Public endpoints and
+server-rendered pages do not include private notes or original source snapshots.
+
+The feature uses `library_dharmam_chapters` and `library_dharmam_audit_log`,
+created by the second Drizzle migration. The existing 60-krithi catalogue and
+its source imports are separate. `db:setup` inserts new Dharmam seed IDs without
+changing existing edits, revisions, publication states or original snapshots.
+Both health endpoints check that the Dharmam table exists, so deploy the admin
+with its migration/seed command before the reader.
+
+The studio has **Sree Narayana Dharmam** in its sidebar and overview. Open
+`/library/dharmam` to edit chapters or choose **Add chapter** for the next one.
+Each chapter supports multiple verse/explanation groups, a reading preview,
+chapter order, draft/published/archived state, private notes, original-contribution
+comparison and revision history. Publishing updates the reader immediately.
+Updates use the same authentication, same-origin checks, payload bounds and
+optimistic revision protection as krithis.
+
+Public API: `GET /api/dharmam` accepts `q`, `page`, and `limit`; `GET
+/api/dharmam/:slug` returns a published chapter and its passages. Admin API:
+`GET/POST /api/library/dharmam` and `GET/PATCH /api/library/dharmam/:id`.
+A save payload contains `title`, `transliteration`, `slug`, `passages` (an array
+of `{verses, explanation}`), `sortOrder` (zero based), `status`, `editorialNote`
+and, for an update, `revision`.
+
+Dharmam reading supports Malayalam/English title search, separate saved chapters
+and reading history, previous/next chapters, shared 16–40 px text zoom, light/dark
+preferences, printing and link copying. There is no fixed chapter-count limit in
+the UI; additional chapters can be entered as their text is supplied.
+
+Verification includes seven package tests, the existing krithi browser suite,
+three Dharmam browser workflows (text preservation, mobile reading, and secured
+admin publication/edit history), responsive visual checks at 320–1440 px, both
+production builds and `scripts/verify-live-library.mjs` for all 60 krithis plus
+the five supplied Dharmam chapters.

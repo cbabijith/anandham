@@ -5,6 +5,7 @@ import { useState } from 'react';
 import {
   LayoutDashboard,
   LibraryBig,
+  BookOpen,
   ExternalLink,
   LogOut,
   Sun,
@@ -66,6 +67,13 @@ export function AdminShell({
           >
             <LibraryBig size={18} /> Krithis collection
           </Link>
+          <Link
+            href="/library/dharmam"
+            onClick={() => setOpen(false)}
+            className={path.startsWith('/library/dharmam') ? 'active' : ''}
+          >
+            <BookOpen size={18} /> Sree Narayana Dharmam
+          </Link>
           <a href={readerUrl} target="_blank" rel="noreferrer">
             <ExternalLink size={18} /> Open reader website
           </a>
@@ -96,7 +104,13 @@ export function AdminShell({
           </button>
           <span>
             Library workspace <span className="la-topbar-divider">/</span>{' '}
-            <strong>{path === '/library' ? 'Overview' : 'Krithis'}</strong>
+            <strong>
+              {path === '/library'
+                ? 'Overview'
+                : path.startsWith('/library/dharmam')
+                  ? 'Dharmam'
+                  : 'Krithis'}
+            </strong>
           </span>
           <div>
             <button

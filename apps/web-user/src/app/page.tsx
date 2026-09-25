@@ -85,6 +85,16 @@ export default async function Home() {
           <p lang="ml">ഒരു ജാതി, ഒരു മതം, ഒരു ദൈവം മനുഷ്യന്.</p>
           <small>ONE CASTE, ONE RELIGION, ONE GOD FOR HUMANITY</small>
         </div>
+        <div className="dharmam-invitation section-container">
+          <div>
+            <span className="eyebrow">CONTINUE YOUR READING</span>
+            <h2 lang="ml">ശ്രീനാരായണ ധർമ്മം</h2>
+            <p>Explore the chapters with verses and Malayalam explanations.</p>
+          </div>
+          <Link href="/dharmam" className="button button-primary">
+            Read Sree Narayana Dharmam <ArrowUpRight size={17} />
+          </Link>
+        </div>
         <Collection works={works} />
         <section id="about" className="about-section section-container">
           <div>

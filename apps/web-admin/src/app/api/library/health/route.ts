@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   try {
     await getSql()`select 1 from library_krithis limit 1`;
+    await getSql()`select 1 from library_dharmam_chapters limit 1`;
     return Response.json({ status: 'ok' });
   } catch {
     return Response.json({ status: 'unavailable' }, { status: 503 });

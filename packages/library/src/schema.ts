@@ -65,3 +65,37 @@ export type KrithiSummary = Omit<Krithi, 'body' | 'sourceBody'> & {
   excerpt: string;
   characters: number;
 };
+
+export type DharmamPassage = { verses: string; explanation: string };
+export const dharmamChapters = pgTable(
+  'library_dharmam_chapters',
+  {
+    id: text('id').primaryKey(),
+    slug: text('slug').notNull().unique(),
+    title: text('title').notNull(),
+    transliteration: text('transliteration').notNull(),
+    passages: jsonb('passages').$type<DharmamPassage[]>().notNull(),
+    sourcePassages: jsonb('source_passages').$type<DharmamPassage[]>().notNull().default([]),
+    sourceLabel: text('source_label').notNull().default('Library editorial contribution'),
+    editorialNote: text('editorial_note').notNull().default(''),
+    sortOrder: integer('sort_order').notNull().default(0),
+    status: text('status', { enum: ['draft', 'published', 'archived'] })
+      .notNull()
+      .default('draft'),
+    revision: integer('revision').notNull().default(1),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index('library_dharmam_status_order_idx').on(t.status, t.sortOrder)],
+);
+export const dharmamAuditLog = pgTable('library_dharmam_audit_log', {
+  id: text('id').primaryKey(),
+  adminId: text('admin_id').references(() => admins.id),
+  chapterId: text('chapter_id')
+    .notNull()
+    .references(() => dharmamChapters.id),
+  action: text('action').notNull(),
+  snapshot: jsonb('snapshot').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+export type DharmamChapter = typeof dharmamChapters.$inferSelect;

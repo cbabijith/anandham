@@ -993,3 +993,31 @@
     transition: none;
   }
 }
+
+.la-dharmam-passage + .la-dharmam-passage {
+  border-top: 1px solid var(--la-line);
+  margin-top: 25px;
+  padding-top: 25px;
+}
+.la-dharmam-passage h3 {
+  font-size: 13px;
+  margin: 0;
+}
+.la-dharmam-passage .la-reading-preview h4 {
+  font-size: 14px;
+  color: var(--la-accent);
+  margin-top: 24px;
+}
+.la-row-actions {
+  display: flex;
+  gap: 10px;
+}
+.la-work-title strong,
+.la-work-title small {
+  display: block;
+}
+.la-work-title small {
+  margin-top: 5px;
+  color: var(--la-muted);
+  font-size: 10px;
+}

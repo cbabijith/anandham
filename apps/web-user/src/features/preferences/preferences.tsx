@@ -55,8 +55,8 @@ export function ThemeToggle() {
     </button>
   );
 }
-export function useBookmarks() {
-  const [raw, set] = usePreference('anandham-bookmarks', '[]');
+export function useBookmarks(key = 'anandham-bookmarks') {
+  const [raw, set] = usePreference(key, '[]');
   let bookmarks: string[] = [];
   try {
     const parsed: unknown = JSON.parse(raw);

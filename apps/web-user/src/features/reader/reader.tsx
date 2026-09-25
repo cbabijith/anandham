@@ -9,16 +9,18 @@ import {
   Plus,
   RotateCcw,
   Share2,
-  Printer,
+  Copy,
   ArrowUpRight,
   Check,
 } from 'lucide-react';
 import { sourceNotes } from '@anandham/library/catalogue';
+import type { DharmamPassage } from '@anandham/library/schema';
 import { useBookmarks, usePreference } from '../preferences/preferences';
 export function Reader({
   work,
   previous,
   next,
+  collection = 'krithis',
 }: {
   work: {
     slug: string;
@@ -27,19 +29,33 @@ export function Reader({
     body: string;
     categoryName: string;
     sourceUrl: string;
+    passages?: DharmamPassage[];
   };
   previous: { slug: string; title: string } | null;
   next: { slug: string; title: string } | null;
+  collection?: 'krithis' | 'dharmam';
 }) {
   const [rawSize, setSize] = usePreference('anandham-font-size', '22');
   const size = Math.max(16, Math.min(40, Number(rawSize) || 22));
-  const { bookmarks, toggle } = useBookmarks();
+  const isDharmam = collection === 'dharmam';
+  const { bookmarks, toggle } = useBookmarks(
+    isDharmam ? 'anandham-dharmam-bookmarks' : 'anandham-bookmarks',
+  );
   const [copied, setCopied] = useState(false);
   const [shareError, setShareError] = useState('');
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'error'>('idle');
   const [progress, setProgress] = useState(0);
   useEffect(() => {
+    if (copyStatus !== 'copied') return;
+    const timeout = setTimeout(() => setCopyStatus('idle'), 2500);
+    return () => clearTimeout(timeout);
+  }, [copyStatus]);
+  useEffect(() => {
     try {
-      localStorage.setItem('anandham-last-read', work.slug);
+      localStorage.setItem(
+        isDharmam ? 'anandham-dharmam-last-read' : 'anandham-last-read',
+        work.slug,
+      );
     } catch {}
     function onScroll() {
       const height = document.documentElement.scrollHeight - window.innerHeight;
@@ -48,7 +64,7 @@ export function Reader({
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
-  }, [work.slug]);
+  }, [work.slug, isDharmam]);
   async function share() {
     try {
       await navigator.clipboard.writeText(window.location.href);
@@ -59,17 +75,30 @@ export function Reader({
       setShareError('Copy this page’s address from your browser to share it.');
     }
   }
+  async function copyKrithi() {
+    setCopyStatus('idle');
+    try {
+      await navigator.clipboard.writeText(`${work.title}\n\n${work.body}`);
+      setCopyStatus('copied');
+    } catch {
+      setCopyStatus('error');
+    }
+  }
   return (
     <main id="main-content" className="reader-page">
       <div className="reading-progress" style={{ width: `${progress}%` }} />
       <div className="reader-top section-container">
-        <Link href="/#collection" className="text-link">
-          <ArrowLeft size={17} /> All krithis
+        <Link href={isDharmam ? '/dharmam' : '/#collection'} className="text-link">
+          <ArrowLeft size={17} /> {isDharmam ? 'All Dharmam chapters' : 'All krithis'}
         </Link>
         <span>{work.categoryName}</span>
       </div>
       <header className="reader-heading">
-        <span className="eyebrow">SREE NARAYANA GURU · ORIGINAL TEXT</span>
+        <span className="eyebrow">
+          {isDharmam
+            ? 'SREE NARAYANA DHARMAM · VERSES & MEANING'
+            : 'SREE NARAYANA GURU · ORIGINAL TEXT'}
+        </span>
         <h1 lang="ml">{work.title}</h1>
         <p>{work.transliteration}</p>
         <div className="reader-ornament">✳</div>
@@ -113,23 +142,51 @@ export function Reader({
           {copied ? <Check size={19} /> : <Share2 size={19} />}
           <span className="tool-label">{copied ? 'Copied' : 'Share'}</span>
         </button>
-        <button type="button" onClick={() => window.print()} aria-label="Print this work">
-          <Printer size={19} />
+        <button
+          type="button"
+          onClick={copyKrithi}
+          aria-label="Copy krithi title and full text"
+          title="Copy krithi title and full text"
+        >
+          {copyStatus === 'copied' ? <Check size={19} /> : <Copy size={19} />}
+          <span className="tool-label">{copyStatus === 'copied' ? 'Copied' : 'Copy'}</span>
         </button>
       </div>
+      {copyStatus !== 'idle' && (
+        <p className="reader-notice" role="status">
+          {copyStatus === 'copied'
+            ? 'Krithi title and full text copied.'
+            : 'Unable to copy the krithi. Please select and copy the text manually.'}
+        </p>
+      )}
       {shareError && (
         <p className="reader-notice" role="status">
           {shareError}
         </p>
       )}
-      {sourceNotes[work.slug] && (
+      {!isDharmam && sourceNotes[work.slug] && (
         <details className="source-note">
           <summary>Note on this source text</summary>
           <p>{sourceNotes[work.slug]}</p>
         </details>
       )}
-      <article className="reading-text" lang="ml" style={{ fontSize: `${size}px` }}>
-        {work.body}
+      <article
+        className={`reading-text ${isDharmam ? 'dharmam-reading' : ''}`}
+        lang="ml"
+        style={{ fontSize: `${size}px` }}
+      >
+        {isDharmam && work.passages
+          ? work.passages.map((passage, index) => (
+              <section className="dharmam-passage" key={index}>
+                <h2 className="passage-label">ശ്ലോകം</h2>
+                <div className="dharmam-verses">{passage.verses}</div>
+                <div className="dharmam-explanation">
+                  <h2 className="passage-label">അർത്ഥം</h2>
+                  <p>{passage.explanation}</p>
+                </div>
+              </section>
+            ))
+          : work.body}
       </article>
       <div className="reader-ending">
         <span>✳</span>
@@ -140,15 +197,19 @@ export function Reader({
           </a>
         )}
         <small>
-          Transcribed as published by the source; source spellings and textual variants are
-          retained.
+          {isDharmam
+            ? 'Verses and Malayalam explanations provided by the library editor.'
+            : 'Transcribed as published by the source; source spellings and textual variants are retained.'}
         </small>
       </div>
-      <nav className="reader-pagination" aria-label="Other krithis">
+      <nav
+        className="reader-pagination"
+        aria-label={isDharmam ? 'Other Dharmam chapters' : 'Other krithis'}
+      >
         {previous ? (
-          <Link href={`/krithis/${previous.slug}`}>
+          <Link href={`/${collection}/${previous.slug}`}>
             <small>
-              <ArrowLeft size={15} /> Previous work
+              <ArrowLeft size={15} /> {isDharmam ? 'Previous chapter' : 'Previous work'}
             </small>
             <span lang="ml">{previous.title}</span>
           </Link>
@@ -156,9 +217,9 @@ export function Reader({
           <span />
         )}
         {next ? (
-          <Link href={`/krithis/${next.slug}`}>
+          <Link href={`/${collection}/${next.slug}`}>
             <small>
-              Next work <ArrowRight size={15} />
+              {isDharmam ? 'Next chapter' : 'Next work'} <ArrowRight size={15} />
             </small>
             <span lang="ml">{next.title}</span>
           </Link>

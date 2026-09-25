@@ -1258,3 +1258,188 @@ p {
     margin-inline: 23px;
   }
 }
+
+.nav-dharmam {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+.dharmam-invitation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding-block: 36px;
+  border-bottom: 1px solid var(--line);
+}
+.dharmam-invitation h2 {
+  font-size: 24px;
+  line-height: 1.8;
+  font-weight: 500;
+  margin: 10px 0 5px;
+}
+.dharmam-invitation p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+.dharmam-collection {
+  padding-block: 35px 65px;
+  min-height: 80vh;
+}
+.dharmam-intro {
+  padding: 50px 0 38px;
+  max-width: 800px;
+}
+.dharmam-intro h1 {
+  font-size: clamp(29px, 4vw, 48px);
+  line-height: 1.8;
+  font-weight: 500;
+  margin: 17px 0 5px;
+  overflow-wrap: anywhere;
+}
+.dharmam-intro p {
+  color: var(--muted);
+  line-height: 1.9;
+  font-size: 13px;
+}
+.dharmam-intro .dharmam-subtitle {
+  font:
+    500 29px var(--font-serif),
+    serif;
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+.dharmam-chapter-count {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.8;
+}
+.dharmam-results {
+  color: var(--muted);
+  font-size: 11px;
+  margin: 22px 0 18px;
+}
+.dharmam-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.dharmam-card {
+  padding: 26px;
+}
+.dharmam-card h2 {
+  font-size: 23px;
+  font-weight: 500;
+  line-height: 1.8;
+  margin: 0 0 6px;
+  overflow-wrap: anywhere;
+}
+.dharmam-excerpt {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 2;
+  overflow-wrap: anywhere;
+  margin-bottom: 25px;
+}
+.dharmam-reading {
+  white-space: normal;
+}
+.dharmam-passage {
+  padding-bottom: 30px;
+}
+.passage-label {
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 2;
+  margin-bottom: 15px;
+}
+.dharmam-verses {
+  white-space: pre-wrap;
+  line-height: 2.1;
+}
+.dharmam-explanation {
+  margin: 28px 0 12px;
+  padding: 26px 30px;
+  background: var(--accent-soft);
+  border-radius: 8px;
+  border-left: 3px solid var(--accent);
+}
+.dharmam-explanation p {
+  white-space: pre-wrap;
+  line-height: 2.05;
+  margin: 0;
+}
+@media (max-width: 700px) {
+  .nav-dharmam {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 40px;
+  }
+  .nav-dharmam > span {
+    display: none;
+  }
+  .site-header nav {
+    gap: 8px;
+  }
+  .header-inner {
+    gap: 8px;
+  }
+  .dharmam-invitation {
+    align-items: flex-start;
+    flex-direction: column;
+    padding-block: 28px;
+  }
+  .dharmam-invitation h2 {
+    font-size: 22px;
+  }
+  .dharmam-intro {
+    padding-top: 35px;
+  }
+  .dharmam-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .dharmam-card {
+    padding: 22px;
+  }
+  .dharmam-explanation {
+    padding: 20px 17px;
+  }
+  .dharmam-chapter-count {
+    font-size: 10px;
+    align-items: flex-start;
+  }
+}
+@media print {
+  .dharmam-explanation {
+    border-color: #666;
+    background: transparent;
+    color: #000;
+  }
+}
+@media (min-width: 701px) and (max-width: 850px) {
+  .site-header nav {
+    gap: 16px;
+  }
+  .nav-dharmam > span {
+    display: none;
+  }
+}
+@media (max-width: 380px) {
+  .header-inner {
+    padding-inline: 14px;
+  }
+  .brand small {
+    letter-spacing: 0.7px;
+  }
+}

@@ -8,10 +8,11 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { getLibraryStats } from '@anandham/library/repository';
+import { listDharmam } from '@anandham/library/dharmam-repository';
 import { requireAdmin } from '@/features/library/server';
 export default async function Overview() {
   await requireAdmin();
-  const stats = await getLibraryStats();
+  const [stats, dharmam] = await Promise.all([getLibraryStats(), listDharmam(true)]);
   return (
     <>
       <div className="la-page-heading">
@@ -49,6 +50,22 @@ export default async function Overview() {
           </article>
         ))}
       </div>
+      <section className="la-panel">
+        <div className="la-panel-heading">
+          <h2>Sree Narayana Dharmam</h2>
+          <Link className="la-button" href="/library/dharmam">
+            Manage Dharmam <ArrowRight size={16} />
+          </Link>
+        </div>
+        <p>
+          {dharmam.length} chapters · {dharmam.filter((c) => c.status === 'published').length}{' '}
+          published
+        </p>
+        <p>
+          Care for the verses and Malayalam explanations, and add the next chapter when its text is
+          ready.
+        </p>
+      </section>
       <div className="la-overview-grid">
         <section className="la-panel">
           <div className="la-panel-heading">

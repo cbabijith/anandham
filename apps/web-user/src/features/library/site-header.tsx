@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, BookOpen } from 'lucide-react';
 import { ThemeToggle } from '../preferences/preferences';
 export function SiteHeader() {
   return (
@@ -17,6 +17,10 @@ export function SiteHeader() {
           </Link>
           <Link href="/#about" className="nav-link">
             About Guru <ArrowUpRight size={13} />
+          </Link>
+          <Link href="/dharmam" className="nav-dharmam" aria-label="Sree Narayana Dharmam">
+            <BookOpen size={18} />
+            <span>Dharmam</span>
           </Link>
           <ThemeToggle />
         </nav>
