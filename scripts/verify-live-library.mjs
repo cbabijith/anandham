@@ -53,5 +53,5 @@ assert.ok(
   signIn.url.endsWith('/library/login') || (await signIn.text()).includes('/library/login'),
 );
 console.log(
-  'PASS: both live services healthy; all 60 krithis match source checksums; all five Dharmam chapters match supplied passages; reader pages, private API protection, missing-content handling and admin sign-in redirect verified.',
+  `PASS: both live services healthy; all 60 krithis match source checksums; all ${chapters.length} Dharmam chapters match supplied passages; reader pages, private API protection, missing-content handling and admin sign-in redirect verified.`,
 );

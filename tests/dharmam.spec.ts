@@ -5,13 +5,13 @@ const adminUrl = process.env.LIBRARY_ADMIN_ORIGIN || 'http://localhost:3101';
 const readerUrl = process.env.LIBRARY_READER_URL || 'http://localhost:3100';
 const chapters = JSON.parse(readFileSync('packages/library/data/dharmam.json', 'utf8'));
 
-test('all five Dharmam chapters preserve supplied passages without exposing private source data', async ({
+test('all Dharmam chapters preserve supplied passages without exposing private source data', async ({
   request,
 }) => {
   const response = await request.get('/api/dharmam');
   expect(response.status()).toBe(200);
   const list = await response.json();
-  expect(list.total).toBe(5);
+  expect(list.total).toBe(chapters.length);
   expect(list.data.map((c: { slug: string }) => c.slug)).toEqual(
     chapters.map((c: { slug: string }) => c.slug),
   );
@@ -38,7 +38,7 @@ test('Dharmam mobile search, chapter navigation, meanings, saved chapters, theme
   await page.goto('/');
   await page.getByRole('link', { name: 'Sree Narayana Dharmam', exact: true }).click();
   await expect(page).toHaveURL(/\/dharmam$/);
-  await expect(page.locator('.dharmam-card')).toHaveCount(5);
+  await expect(page.locator('.dharmam-card')).toHaveCount(chapters.length);
   await page.getByRole('textbox', { name: 'Search Dharmam chapters' }).fill('ശിവഗിരി');
   await expect(page.locator('.dharmam-card')).toHaveCount(1);
   await page.getByRole('button', { name: 'Save Sivagiri Varnnana', exact: true }).click();
