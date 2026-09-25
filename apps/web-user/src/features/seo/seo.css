@@ -106,6 +106,50 @@
   line-height: 1.9;
   margin-top: 16px;
 }
+.reader-reference {
+  max-width: 720px;
+  margin: 36px auto;
+  padding: 0 24px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.9;
+  overflow-wrap: anywhere;
+}
+.reader-reference-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  justify-content: space-between;
+}
+.reader-reference a,
+.passage-permalink {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.reader-reference details {
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+  padding-top: 16px;
+}
+.reader-reference summary { cursor: pointer; }
+.reader-reference details p { margin: 16px 0; }
+.reader-reference button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-right: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.passage-permalink {
+  display: inline-block;
+  font: 0.75rem/1.8 var(--font-sans), sans-serif;
+  margin-bottom: 12px;
+}
+.dharmam-passage, #text { scroll-margin-top: 180px; }
 @media (max-width: 540px) {
   .guide-heading {
     gap: 20px;

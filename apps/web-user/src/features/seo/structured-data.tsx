@@ -101,6 +101,11 @@ export function workGraph(
     url: absoluteUrl(path),
     inLanguage: 'ml',
     isAccessibleForFree: true,
+    encoding: {
+      '@type': 'MediaObject',
+      encodingFormat: 'text/plain',
+      contentUrl: absoluteUrl(`${path}/text`),
+    },
     dateModified: new Date(work.updatedAt).toISOString(),
     mainEntityOfPage: absoluteUrl(path),
     about: guruEntity,

@@ -41,6 +41,11 @@ export default function Page() {
             Anandham is an independent reading resource. Source links identify the material used;
             they do not imply endorsement by Sivagiri Mutt.
           </p>
+          <p>
+            Each reading page offers a plain-text edition, a citation and the date its text was last
+            updated. Dharmam passages have individual links for sharing a specific passage. The{' '}
+            <a href="/llms.txt">plain-text catalogue</a> lists the currently published works and chapters.
+          </p>
         </section>
         <div className="guide-links">
           <Link href="/sree-narayana-guru">About Sree Narayana Guru</Link>

@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { getDharmam, listDharmam } from '@/lib/library-reader';
 import { SiteHeader } from '@/features/library/site-header';
 import { Reader } from '@/features/reader/reader';
-import { pageMetadata } from '@/features/seo/metadata';
+import { absoluteUrl, pageMetadata } from '@/features/seo/metadata';
 import { breadcrumbs, JsonLd, workGraph } from '@/features/seo/structured-data';
 export const dynamic = 'force-dynamic';
 export async function generateMetadata({
@@ -18,6 +18,7 @@ export async function generateMetadata({
     description: `Read ${chapter.transliteration} (${chapter.title}) in Sree Narayana Dharmam, with verses and Malayalam meaning. ശ്ലോകങ്ങളും മലയാളത്തിലുള്ള അർത്ഥവും.`,
     path: `/dharmam/${chapter.slug}`,
     language: 'ml',
+    plainText: true,
   });
 }
 export default async function ChapterPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -48,7 +49,9 @@ export default async function ChapterPage({ params }: { params: Promise<{ slug: 
           passages: chapter.passages,
           categoryName: `Chapter ${chapter.sortOrder + 1}`,
           sourceUrl: '',
+          updatedAt: chapter.updatedAt,
         }}
+        canonicalUrl={absoluteUrl(`/dharmam/${chapter.slug}`)}
         previous={neighbor(index - 1)}
         next={neighbor(index + 1)}
       />

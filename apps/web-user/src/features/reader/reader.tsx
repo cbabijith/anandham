@@ -16,11 +16,13 @@ import {
 import { sourceNotes } from '@anandham/library/catalogue';
 import type { DharmamPassage } from '@anandham/library/schema';
 import { useBookmarks, usePreference } from '../preferences/preferences';
+import { passageText } from '../seo/text-edition';
 export function Reader({
   work,
   previous,
   next,
   collection = 'krithis',
+  canonicalUrl,
 }: {
   work: {
     slug: string;
@@ -29,11 +31,13 @@ export function Reader({
     body: string;
     categoryName: string;
     sourceUrl: string;
+    updatedAt: string;
     passages?: DharmamPassage[];
   };
   previous: { slug: string; title: string } | null;
   next: { slug: string; title: string } | null;
   collection?: 'krithis' | 'dharmam';
+  canonicalUrl: string;
 }) {
   const [rawSize, setSize] = usePreference('anandham-font-size', '22');
   const size = Math.max(16, Math.min(40, Number(rawSize) || 22));
@@ -45,6 +49,9 @@ export function Reader({
   const [shareError, setShareError] = useState('');
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'error'>('idle');
   const [progress, setProgress] = useState(0);
+  const [citationStatus, setCitationStatus] = useState('');
+  const updatedDate = new Date(work.updatedAt).toISOString().slice(0, 10);
+  const citation = `${isDharmam ? 'Sree Narayana Dharmam' : 'Sree Narayana Guru'}. ${work.title} (${work.transliteration}). Anandham. Text updated ${updatedDate}. ${canonicalUrl}`;
   useEffect(() => {
     if (copyStatus !== 'copied') return;
     const timeout = setTimeout(() => setCopyStatus('idle'), 2500);
@@ -67,7 +74,7 @@ export function Reader({
   }, [work.slug, isDharmam]);
   async function share() {
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(`${canonicalUrl}${window.location.hash}`);
       setCopied(true);
       setShareError('');
       setTimeout(() => setCopied(false), 2500);
@@ -78,10 +85,18 @@ export function Reader({
   async function copyKrithi() {
     setCopyStatus('idle');
     try {
-      await navigator.clipboard.writeText(`${work.title}\n\n${work.body}`);
+      await navigator.clipboard.writeText(`${work.title}\n\n${isDharmam && work.passages ? passageText(work.passages) : work.body}`);
       setCopyStatus('copied');
     } catch {
       setCopyStatus('error');
+    }
+  }
+  async function copyCitation() {
+    try {
+      await navigator.clipboard.writeText(citation);
+      setCitationStatus('Citation copied.');
+    } catch {
+      setCitationStatus('Please select and copy the citation below.');
     }
   }
   return (
@@ -145,8 +160,8 @@ export function Reader({
         <button
           type="button"
           onClick={copyKrithi}
-          aria-label="Copy krithi title and full text"
-          title="Copy krithi title and full text"
+          aria-label="Copy title and full text"
+          title="Copy title and full text"
         >
           {copyStatus === 'copied' ? <Check size={19} /> : <Copy size={19} />}
           <span className="tool-label">{copyStatus === 'copied' ? 'Copied' : 'Copy'}</span>
@@ -155,8 +170,8 @@ export function Reader({
       {copyStatus !== 'idle' && (
         <p className="reader-notice" role="status">
           {copyStatus === 'copied'
-            ? 'Krithi title and full text copied.'
-            : 'Unable to copy the krithi. Please select and copy the text manually.'}
+            ? 'Title and full text copied.'
+            : 'Unable to copy. Please select and copy the text manually.'}
         </p>
       )}
       {shareError && (
@@ -171,13 +186,17 @@ export function Reader({
         </details>
       )}
       <article
+        id="text"
         className={`reading-text ${isDharmam ? 'dharmam-reading' : ''}`}
         lang="ml"
         style={{ fontSize: `${size}px` }}
       >
         {isDharmam && work.passages
           ? work.passages.map((passage, index) => (
-              <section className="dharmam-passage" key={index}>
+              <section className="dharmam-passage" id={`passage-${index + 1}`} key={index}>
+                <a className="passage-permalink" href={`#passage-${index + 1}`} lang="en" aria-label={`Link to passage ${index + 1}`}>
+                  Passage {index + 1} <span aria-hidden="true">↗</span>
+                </a>
                 <h2 className="passage-label">ശ്ലോകം</h2>
                 <div className="dharmam-verses">{passage.verses}</div>
                 <div className="dharmam-explanation">
@@ -188,6 +207,18 @@ export function Reader({
             ))
           : work.body}
       </article>
+      <section className="reader-reference" aria-label="Source and citation">
+        <p className="reader-reference-tools">
+          <a href={`/${collection}/${work.slug}/text`} type="text/plain">Read plain text</a>
+          <span>Text updated <time dateTime={work.updatedAt}>{updatedDate}</time></span>
+        </p>
+        <details>
+          <summary>Cite this {isDharmam ? 'chapter' : 'work'} · അവലംബം</summary>
+          <p>{citation}</p>
+          <button type="button" onClick={copyCitation}><Copy size={15} /> Copy citation</button>
+          <span role="status">{citationStatus}</span>
+        </details>
+      </section>
       <div className="reader-ending">
         <span>✳</span>
         <p>Take a moment. Let the words settle.</p>

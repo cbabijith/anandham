@@ -27,12 +27,14 @@ export function pageMetadata({
   path,
   language = 'en',
   translated = false,
+  plainText = false,
 }: {
   title: string;
   description: string;
   path: string;
   language?: 'en' | 'ml';
   translated?: boolean;
+  plainText?: boolean;
 }): Metadata {
   return {
     title: { absolute: `${title} | ${siteName}` },
@@ -40,6 +42,7 @@ export function pageMetadata({
     alternates: {
       canonical: absoluteUrl(path),
       ...(translated ? { languages: profileLanguages } : {}),
+      ...(plainText ? { types: { 'text/plain': absoluteUrl(`${path}/text`) } } : {}),
     },
     openGraph: {
       type: 'website',

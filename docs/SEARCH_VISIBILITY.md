@@ -52,6 +52,40 @@ redirect the entire Railway service: it also serves the public content API.
 
 ## Validation and limits
 
+### AI retrieval and citation
+
+The public robots file explicitly permits `OAI-SearchBot`, `ChatGPT-User`,
+`Claude-SearchBot`, `Claude-User`, `Googlebot`, `Google-Extended` and `bingbot`.
+Each group retains the same API/login/editorial exclusions. The previous wildcard
+already allowed these public crawlers; the explicit policy makes this auditable.
+`Google-Extended` governs both Gemini grounding and model-training uses. It is not
+a Google Search ranking signal. ChatGPT and Claude distinguish their search bots
+from training bots; permitting training is not a requirement for search inclusion.
+
+`/llms.txt` is an optional, live catalogue containing only published works and
+chapters. It describes provenance and language limitations without asking a model
+to rank or recommend this site. It is not a supported ranking switch, and Google
+does not require special AI files or AI schema for AI Overviews/AI Mode.
+
+Every reading page links to its `/text` edition with exact published content,
+source information, update date and canonical reading URL. Text responses have a
+canonical Link header and `noindex, follow` to keep the HTML edition as the search
+result; they remain retrievable by readers and assistants. The HTML page also
+includes its alternate-format link and CreativeWork encoding. Dharmam passages
+have individual anchors, and readers can copy a citation on either collection.
+No draft, editorial note or preserved private source field is exported.
+
+Run `node scripts/verify-ai-discovery.mjs` (optionally `SEO_BASE_URL=...`). This
+compares every text edition against the published API, checks canonical links and
+robots exclusions, and simulates six search/retrieval user agents against HTML.
+These probes do not originate from provider IPs and are not proof of actual bot
+visits, indexing, citations or first-place results. Check verified provider crawler
+IP ranges in hosting logs and provider webmaster reports for real crawl evidence.
+
+Provider references: [OpenAI crawlers](https://developers.openai.com/api/docs/bots),
+[Anthropic crawlers](https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler),
+[Google-Extended](https://developers.google.com/crawling/docs/crawlers-fetchers/google-common-crawlers#google-extended).
+
 Run `node scripts/verify-seo.mjs` against production; set `SEO_BASE_URL` for a
 local server. The production build, mobile rendering, every canonical sitemap URL,
 structured data, language links, image assets and crawler-visible text are checked.

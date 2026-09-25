@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { getKrithi, listKrithis } from '@/lib/library-reader';
 import { SiteHeader } from '@/features/library/site-header';
 import { Reader } from '@/features/reader/reader';
-import { pageMetadata } from '@/features/seo/metadata';
+import { absoluteUrl, pageMetadata } from '@/features/seo/metadata';
 import { breadcrumbs, JsonLd, workGraph } from '@/features/seo/structured-data';
 export const dynamic = 'force-dynamic';
 export async function generateMetadata({
@@ -18,6 +18,7 @@ export async function generateMetadata({
     description: `Read ${work.transliteration} (${work.title}) by Sree Narayana Guru in Malayalam script. ശ്രീനാരായണ ഗുരുവിന്റെ കൃതി വായിക്കാം.`,
     path: `/krithis/${work.slug}`,
     language: 'ml',
+    plainText: true,
   });
 }
 export default async function KrithiPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -45,7 +46,9 @@ export default async function KrithiPage({ params }: { params: Promise<{ slug: s
           body: work.body,
           categoryName: work.categoryName,
           sourceUrl: work.sourceUrl,
+          updatedAt: work.updatedAt,
         }}
+        canonicalUrl={absoluteUrl(`/krithis/${work.slug}`)}
         previous={neighbor(index - 1)}
         next={neighbor(index + 1)}
       />
