@@ -26,6 +26,23 @@ still Vercel; default template icons and visible template branding are removed.
 
 ## Search Console and Bing
 
+### Verified release status — 26 September 2026
+
+- Application commit `5cbba38` is deployed on `anandham.online` and the Railway reader.
+- Both verification scripts passed in production: 76 canonical HTML pages and 70
+  exact published text editions, with six simulated crawler user agents.
+- The verified Google Search Console domain property `sc-domain:anandham.online`
+  processed `https://anandham.online/sitemap.xml` with **Success, 76 discovered pages**.
+- Google's live homepage test returned **URL is available to Google / Page can be
+  indexed**. Indexing requests were accepted for `/`, `/sree-narayana-guru` and
+  `/ml/sree-narayana-guru`. These URLs were not yet indexed at inspection time.
+- IndexNow received the 76-URL batch with **HTTP 200** after key verification
+  initially returned 403. Receipt is not proof of indexing or ranking.
+- Hosting firewall status reported **AI Bots: Allow**. No firewall settings were
+  weakened or changed.
+
+### Account setup and subsequent checks
+
 Ownership verification and sitemap submission require the owner's account.
 Google: https://search.google.com/search-console
 Bing: https://www.bing.com/webmasters/
