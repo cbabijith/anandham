@@ -1,22 +1,31 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowDown, ArrowUpRight, BookOpen, Sparkles } from 'lucide-react';
-import { listKrithis, summarize } from '@anandham/library/repository';
+import { listKrithis } from '@/lib/library-reader';
 import { SiteHeader } from '@/features/library/site-header';
 import { Collection } from '@/features/library/collection';
+import { pageMetadata, siteDescription } from '@/features/seo/metadata';
+import { JsonLd, siteGraph } from '@/features/seo/structured-data';
+import { LibraryQuestions } from '@/features/seo/library-questions';
 export const dynamic = 'force-dynamic';
+export const metadata = pageMetadata({
+  title: 'Sree Narayana Guru Krithis & Dharmam · ശ്രീനാരായണ ഗുരു',
+  description: siteDescription,
+  path: '/',
+});
 export default async function Home() {
-  const works = (await listKrithis())
-    .map(summarize)
-    .map(({ createdAt: _created, updatedAt: _updated, ...work }) => {
+  const works = (await listKrithis()).map(
+    ({ createdAt: _created, updatedAt: _updated, ...work }) => {
       void _created;
       void _updated;
       return work;
-    });
+    },
+  );
   const categoryCount = new Set(works.map((k) => k.category)).size;
   return (
     <>
       <SiteHeader />
+      <JsonLd data={siteGraph()} />
       <main id="main-content">
         <section className="hero section-container">
           <div className="hero-copy">
@@ -24,12 +33,12 @@ export default async function Home() {
               <span className="tiny-sun">✳</span> A DIGITAL LIBRARY FOR EVERYONE
             </span>
             <h1>
-              Timeless words.
+              Sree Narayana Guru.
               <br />
-              An <em>awakened</em> world.
+              <em>Timeless words.</em>
             </h1>
             <p className="hero-subtitle" lang="ml">
-              അറിവിന്റെ വെളിച്ചത്തിലേക്ക്.
+              ശ്രീനാരായണ ഗുരുവിന്റെ കൃതികൾ
             </p>
             <p className="hero-description">
               Discover the collected writings of Sree Narayana Guru.
@@ -125,8 +134,19 @@ export default async function Home() {
             >
               Visit the source collection <ArrowUpRight size={16} />
             </a>
+            <p>
+              <Link className="text-link" href="/sree-narayana-guru">
+                Read about Sree Narayana Guru <ArrowUpRight size={16} />
+              </Link>
+            </p>
+            <p>
+              <Link className="text-link" href="/ml/sree-narayana-guru" lang="ml">
+                ശ്രീനാരായണ ഗുരുവിനെക്കുറിച്ച് വായിക്കാം
+              </Link>
+            </p>
           </div>
         </section>
+        <LibraryQuestions />
       </main>
       <footer className="site-footer section-container">
         <Link href="/" className="footer-brand" aria-label="Anandham home">
@@ -138,7 +158,9 @@ export default async function Home() {
             sizes="210px"
           />
         </Link>
-        <p>Read. Reflect. Return.</p>
+        <p>
+          <Link href="/about">About & sources</Link> · <Link href="/krithis">All krithis</Link>
+        </p>
         <span>A tribute to the wisdom of Sree Narayana Guru</span>
       </footer>
     </>

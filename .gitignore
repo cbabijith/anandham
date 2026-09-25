@@ -92,3 +92,5 @@ yarn-error.log*
 test-results/
 playwright-report/
 *.tsbuildinfo
+# Local hosting project links and deployment credentials.
+.vercel/

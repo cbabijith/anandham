@@ -1,0 +1,24 @@
+# Credentials and local environment files must never be uploaded.
+.private/
+**/.env*
+**/*.pem
+**/*.key
+
+# Local build, test, and cache artifacts.
+**/node_modules/
+**/.next/
+**/.turbo/
+**/build/
+**/dist/
+**/*.tsbuildinfo
+test-results/
+playwright-report/
+coverage/
+**/.DS_Store
+
+# Mobile apps and binaries are not part of the web deployment.
+apps/mobile_*/
+packages/flutter_core/
+**/*.aab
+**/*.apk
+**/*.ipa

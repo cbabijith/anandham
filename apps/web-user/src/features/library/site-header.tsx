@@ -12,10 +12,10 @@ export function SiteHeader() {
           </span>
         </Link>
         <nav aria-label="Main navigation">
-          <Link href="/#collection" className="nav-link">
+          <Link href="/krithis" className="nav-link">
             The collection
           </Link>
-          <Link href="/#about" className="nav-link">
+          <Link href="/sree-narayana-guru" className="nav-link">
             About Guru <ArrowUpRight size={13} />
           </Link>
           <Link href="/dharmam" className="nav-dharmam" aria-label="Sree Narayana Dharmam">

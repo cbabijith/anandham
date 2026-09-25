@@ -1,0 +1,124 @@
+.guide-page {
+  max-width: 960px;
+  padding-top: 36px;
+  padding-bottom: 80px;
+}
+.guide-page h1,
+.catalogue-intro h1 {
+  font-family: var(--font-serif), var(--font-malayalam), serif;
+  font-size: clamp(2.1rem, 5vw, 3.8rem);
+  line-height: 1.25;
+  margin: 20px 0;
+}
+.guide-page[lang='ml'] h1,
+.guide-page[lang='ml'] h2 {
+  font-family: var(--font-malayalam), sans-serif;
+}
+.guide-page section {
+  margin: 44px 0;
+}
+.guide-page h2,
+.search-questions h2 {
+  font-size: clamp(1.3rem, 3vw, 1.85rem);
+  line-height: 1.6;
+}
+.guide-page p {
+  font-size: 1.08rem;
+  line-height: 1.95;
+  margin: 16px 0;
+}
+.guide-page a:not(.button),
+.search-questions a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.guide-heading {
+  display: flex;
+  gap: 36px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 35px 0;
+}
+.guide-heading img {
+  width: 130px;
+  height: auto;
+  border-radius: 10px;
+}
+.guide-subtitle,
+.catalogue-intro > p[lang] {
+  color: var(--accent);
+  font-size: 1.4rem;
+}
+.guide-breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.85rem;
+}
+.guide-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 28px;
+  line-height: 1.8;
+}
+.guide-page blockquote {
+  margin: 28px 0;
+  border-left: 3px solid var(--accent);
+  padding: 12px 24px;
+  line-height: 2;
+  font-family: var(--font-malayalam), sans-serif;
+}
+.guide-note {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+.search-questions {
+  padding-top: 30px;
+  padding-bottom: 72px;
+}
+.search-questions > p {
+  margin: 14px 0 24px;
+  line-height: 1.8;
+}
+.search-questions details {
+  border-bottom: 1px solid var(--border);
+  padding: 22px 0;
+}
+.search-questions summary {
+  cursor: pointer;
+  font-weight: 600;
+  line-height: 1.8;
+}
+.search-questions details p {
+  max-width: 800px;
+  margin: 16px 0 0;
+  line-height: 1.9;
+}
+.search-questions [lang='ml'],
+.guide-page [lang='ml'] {
+  font-family: var(--font-malayalam), sans-serif;
+}
+.catalogue-intro {
+  padding-top: 50px;
+}
+.catalogue-intro p {
+  line-height: 1.9;
+  margin-top: 16px;
+}
+@media (max-width: 540px) {
+  .guide-heading {
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .guide-heading img {
+    width: 80px;
+  }
+  .guide-page h1 {
+    font-size: 2rem;
+    overflow-wrap: anywhere;
+  }
+  .guide-page[lang='ml'] .guide-heading {
+    flex-direction: column-reverse;
+  }
+}

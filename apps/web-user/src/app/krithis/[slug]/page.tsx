@@ -1,8 +1,10 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getKrithi, listKrithis } from '@anandham/library/repository';
+import { getKrithi, listKrithis } from '@/lib/library-reader';
 import { SiteHeader } from '@/features/library/site-header';
 import { Reader } from '@/features/reader/reader';
+import { pageMetadata } from '@/features/seo/metadata';
+import { breadcrumbs, JsonLd, workGraph } from '@/features/seo/structured-data';
 export const dynamic = 'force-dynamic';
 export async function generateMetadata({
   params,
@@ -10,14 +12,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const work = await getKrithi((await params).slug);
-  return {
-    title: work
-      ? `${work.title} · ${work.transliteration} | Anandham`
-      : 'Work not found | Anandham',
-    description: work
-      ? `Read ${work.transliteration} by Sree Narayana Guru in the original Malayalam script.`
-      : undefined,
-  };
+  if (!work) notFound();
+  return pageMetadata({
+    title: `${work.transliteration} · ${work.title} — Sree Narayana Guru`,
+    description: `Read ${work.transliteration} (${work.title}) by Sree Narayana Guru in Malayalam script. ശ്രീനാരായണ ഗുരുവിന്റെ കൃതി വായിക്കാം.`,
+    path: `/krithis/${work.slug}`,
+    language: 'ml',
+  });
 }
 export default async function KrithiPage({ params }: { params: Promise<{ slug: string }> }) {
   const work = await getKrithi((await params).slug);
@@ -28,6 +29,14 @@ export default async function KrithiPage({ params }: { params: Promise<{ slug: s
   return (
     <>
       <SiteHeader />
+      <JsonLd data={workGraph(work, 'krithis')} />
+      <JsonLd
+        data={breadcrumbs([
+          { name: 'Anandham', path: '/' },
+          { name: 'Krithis', path: '/krithis' },
+          { name: work.title, path: `/krithis/${work.slug}` },
+        ])}
+      />
       <Reader
         work={{
           slug: work.slug,
