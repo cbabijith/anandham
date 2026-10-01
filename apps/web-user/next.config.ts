@@ -1,6 +1,9 @@
 import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  poweredByHeader: false,
+  // Preserve complete metadata for readers and crawlers without JavaScript.
+  htmlLimitedBots: /.*/,
   experimental: {
     // The persistent cache restored stale global CSS during production verification.
     turbopackFileSystemCacheForBuild: false,
@@ -11,13 +14,14 @@ const nextConfig: NextConfig = {
   async rewrites() {
     const apiUrl = process.env.LIBRARY_API_URL?.replace(/\/+$/, '');
     return {
-      beforeFiles: apiUrl
-        ? [{ source: '/api/:path*', destination: `${apiUrl}/:path*` }]
-        : [],
+      beforeFiles: apiUrl ? [{ source: '/api/:path*', destination: `${apiUrl}/:path*` }] : [],
     };
   },
   async headers() {
     return [
+      { source: '/api/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] },
+      { source: '/login', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] },
+      { source: '/saved', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] },
       {
         source: '/:path*',
         headers: [

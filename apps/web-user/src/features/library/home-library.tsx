@@ -222,7 +222,9 @@ export function HomeLibrary({ works, chapters }: { works: Work[]; chapters: Chap
               </Link>
             </section>
           </div>
-          <p className="home-endnote">Free to read. A tribute to Sree Narayana Guru.</p>
+          <p className="home-endnote">
+            Free to read. A tribute to Sree Narayana Guru. <Link href="/about">About Anandham</Link>
+          </p>
         </>
       )}
     </main>

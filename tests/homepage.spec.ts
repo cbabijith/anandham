@@ -107,7 +107,9 @@ test('Explore provides published reading links and clearly labels seven future c
   page,
 }) => {
   await page.goto('/explore');
-  await expect(page.locator('.reading-list a')).toHaveCount(3);
+  await expect(
+    page.locator('.explore-page > section').first().locator('.reading-list a'),
+  ).toHaveCount(3);
   await expect(page.locator('.upcoming-grid li')).toHaveCount(7);
   await expect(page.locator('.upcoming-grid a')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Coming to Anandham' })).toBeVisible();

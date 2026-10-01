@@ -2,7 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
-const reader = process.env.LIBRARY_READER_URL ?? 'https://web-user-production-b9c9.up.railway.app';
+const reader = process.env.LIBRARY_READER_URL ?? 'https://anandham.online';
 const admin =
   process.env.LIBRARY_ADMIN_ORIGIN ?? 'https://web-admin-production-1fe2.up.railway.app';
 const corpus = JSON.parse(

@@ -18,7 +18,9 @@ export function SiteHeader() {
     pathname.startsWith('/guru-arul') ||
     pathname.startsWith('/krithis')
       ? '/krithis'
-      : pathname;
+      : ['/about', '/sree-narayana-guru', '/ml/sree-narayana-guru'].includes(pathname)
+        ? '/explore'
+        : pathname;
   return (
     <>
       <header className="site-header library-header">

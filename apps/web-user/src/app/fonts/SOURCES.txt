@@ -1,0 +1,8 @@
+Manrope (Latin subset) and Noto Sans Malayalam (Malayalam subset).
+Original WOFF2 files returned by Google Fonts for the existing next/font/google configuration, preserved locally to remove build-time network requests.
+
+Upstream sources:
+https://github.com/google/fonts/tree/main/ofl/manrope
+https://github.com/google/fonts/tree/main/ofl/notosansmalayalam
+
+Both fonts are licensed under the SIL Open Font License 1.1. The original licenses are included beside the font files.
