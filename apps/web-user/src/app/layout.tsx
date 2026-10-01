@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Manrope, Noto_Sans_Malayalam, Cormorant_Garamond } from 'next/font/google';
+import { Manrope, Noto_Sans_Malayalam } from 'next/font/google';
 import './globals.css';
 const sans = Manrope({ variable: '--font-sans', subsets: ['latin'] });
 const malayalam = Noto_Sans_Malayalam({
@@ -7,16 +7,10 @@ const malayalam = Noto_Sans_Malayalam({
   subsets: ['malayalam'],
   weight: ['400', '500', '600', '700'],
 });
-const serif = Cormorant_Garamond({
-  variable: '--font-serif',
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  style: ['normal', 'italic'],
-});
 export const metadata: Metadata = {
-  title: 'Anandham — The writings of Sree Narayana Guru',
+  title: 'Anandham — Krithis, Dharmam & Guru Arul',
   description:
-    'Explore the 60 krithis in Sivagiri’s Gurudeva Krithikal catalogue. Read Sree Narayana Guru’s original writings with adjustable text and light or dark themes.',
+    'Read Sree Narayana Guru’s 60 krithis, Sree Narayana Dharmam with Malayalam explanations, and Guru Arul quotes. Search, save favourites, and read at your own pace.',
   icons: { icon: '/images/sree-narayana-guru-original.png' },
 };
 const themeScript = `(function(){try{var t=localStorage.getItem('anandham-theme');document.documentElement.dataset.theme=t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light'}catch(e){}})()`;
@@ -26,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className={`${sans.variable} ${malayalam.variable} ${serif.variable}`}>
+      <body className={`${sans.variable} ${malayalam.variable}`}>
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>

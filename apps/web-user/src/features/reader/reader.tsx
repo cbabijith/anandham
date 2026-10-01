@@ -88,7 +88,7 @@ export function Reader({
     <main id="main-content" className="reader-page">
       <div className="reading-progress" style={{ width: `${progress}%` }} />
       <div className="reader-top section-container">
-        <Link href={isDharmam ? '/dharmam' : '/#collection'} className="text-link">
+        <Link href={isDharmam ? '/dharmam' : '/krithis'} className="text-link">
           <ArrowLeft size={17} /> {isDharmam ? 'All Dharmam chapters' : 'All krithis'}
         </Link>
         <span>{work.categoryName}</span>

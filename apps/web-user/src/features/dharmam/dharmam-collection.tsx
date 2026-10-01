@@ -1,7 +1,8 @@
 'use client';
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, ArrowUpRight, Bookmark, BookOpen, Search, X } from 'lucide-react';
+import { ReadingTabs } from '../library/reading-tabs';
+import { ArrowRight, Bookmark, BookOpen, Search, X } from 'lucide-react';
 import { normalizeSearch } from '@anandham/library/catalogue';
 import type { DharmamSummary } from '@anandham/library/dharmam-repository';
 import { useBookmarks, usePreference } from '../preferences/preferences';
@@ -23,10 +24,8 @@ export function DharmamCollection({ chapters }: { chapters: Chapter[] }) {
     [chapters, savedOnly, bookmarks, query],
   );
   return (
-    <main id="main-content" className="dharmam-collection section-container">
-      <Link href="/#collection" className="text-link">
-        <ArrowLeft size={16} /> Back to the library
-      </Link>
+    <main id="main-content" className="dharmam-collection app-container">
+      <ReadingTabs />
       <header className="dharmam-intro">
         <span className="eyebrow">A LIFE GUIDED BY WISDOM</span>
         <h1 lang="ml">ശ്രീനാരായണ ധർമ്മം</h1>
@@ -105,7 +104,7 @@ export function DharmamCollection({ chapters }: { chapters: Chapter[] }) {
                 href={`/dharmam/${chapter.slug}`}
                 aria-label={`Read ${chapter.transliteration}`}
               >
-                <ArrowUpRight size={21} />
+                Read <ArrowRight size={18} />
               </Link>
             </div>
           </article>

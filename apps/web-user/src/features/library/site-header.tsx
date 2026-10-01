@@ -1,30 +1,50 @@
+'use client';
+
 import Link from 'next/link';
-import { ArrowUpRight, BookOpen } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { Bookmark, BookOpen, Compass, Home } from 'lucide-react';
 import { ThemeToggle } from '../preferences/preferences';
+
+const links = [
+  { href: '/', label: 'Home', icon: Home },
+  { href: '/krithis', label: 'Library', icon: BookOpen },
+  { href: '/explore', label: 'Explore', icon: Compass },
+  { href: '/saved', label: 'Saved', icon: Bookmark },
+];
 export function SiteHeader() {
+  const pathname = usePathname();
+  const active =
+    pathname.startsWith('/dharmam') ||
+    pathname.startsWith('/guru-arul') ||
+    pathname.startsWith('/krithis')
+      ? '/krithis'
+      : pathname;
   return (
-    <header className="site-header">
-      <div className="header-inner">
-        <Link href="/" className="brand" aria-label="Anandham home">
-          <span className="brand-mark" aria-hidden="true" />
-          <span>
-            Anandham<small>THE WISDOM OF SREE NARAYANA GURU</small>
-          </span>
-        </Link>
-        <nav aria-label="Main navigation">
-          <Link href="/#collection" className="nav-link">
-            The collection
+    <>
+      <header className="site-header library-header">
+        <div className="header-inner">
+          <Link href="/" className="brand" aria-label="Anandham home">
+            <span className="brand-mark" aria-hidden="true" />
+            <span>Anandham</span>
           </Link>
-          <Link href="/#about" className="nav-link">
-            About Guru <ArrowUpRight size={13} />
-          </Link>
-          <Link href="/dharmam" className="nav-dharmam" aria-label="Sree Narayana Dharmam">
-            <BookOpen size={18} />
-            <span>Dharmam</span>
-          </Link>
+          <nav className="desktop-navigation" aria-label="Main navigation">
+            {links.map(({ href, label }) => (
+              <Link key={href} href={href} aria-current={active === href ? 'page' : undefined}>
+                {label}
+              </Link>
+            ))}
+          </nav>
           <ThemeToggle />
-        </nav>
-      </div>
-    </header>
+        </div>
+      </header>
+      <nav className="bottom-navigation" aria-label="Mobile navigation">
+        {links.map(({ href, label, icon: Icon }) => (
+          <Link key={href} href={href} aria-current={active === href ? 'page' : undefined}>
+            <Icon size={22} strokeWidth={active === href ? 2.2 : 1.7} aria-hidden="true" />
+            <span>{label}</span>
+          </Link>
+        ))}
+      </nav>
+    </>
   );
 }

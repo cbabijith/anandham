@@ -46,7 +46,7 @@ test('mobile collection, Malayalam search, saved works, reader zoom and theme pe
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/krithis');
   await expect(page.locator('.work-card')).toHaveCount(60);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ caret: 'initial', path: 'test-results/reader-mobile.png' });
@@ -74,7 +74,7 @@ test('mobile collection, Malayalam search, saved works, reader zoom and theme pe
   await page.screenshot({ caret: 'initial', path: 'test-results/reader-dark-zoom-mobile.png' });
   await page.getByRole('button', { name: 'Reset text size' }).click();
   await expect(page.locator('.reading-text')).toHaveCSS('font-size', '22px');
-  await page.goto('/#collection');
+  await page.goto('/krithis');
   await page.getByRole('button', { name: /^Saved/ }).click();
   await expect(page.locator('.work-card')).toHaveCount(1);
   await page.getByRole('button', { name: 'Unsave Daiva Dasakam', exact: true }).click();
@@ -83,9 +83,9 @@ test('mobile collection, Malayalam search, saved works, reader zoom and theme pe
 
 test('desktop reading layout and categories', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1050 });
-  await page.goto('/');
+  await page.goto('/krithis');
   await page.screenshot({ caret: 'initial', path: 'test-results/reader-desktop.png' });
-  await page.getByRole('button', { name: 'Philosophy', exact: true }).click();
+  await page.getByRole('combobox', { name: 'Filter by category' }).selectOption('philosophy');
   await expect(page.locator('.work-card')).toHaveCount(11);
   await page.getByRole('combobox', { name: 'Sort works' }).selectOption('az');
   await expect(page.locator('.work-card').first()).toContainText('Advaita Deepika');

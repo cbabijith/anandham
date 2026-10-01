@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { listDharmam, summarizeDharmam } from '@anandham/library/dharmam-repository';
+import { listDharmam } from '@/lib/library-reader';
 import { SiteHeader } from '@/features/library/site-header';
 import { DharmamCollection } from '@/features/dharmam/dharmam-collection';
 export const dynamic = 'force-dynamic';
@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 };
 export default async function DharmamPage() {
   const chapters = (await listDharmam())
-    .map(summarizeDharmam)
     .map(({ createdAt, updatedAt, ...chapter }) => {
       void createdAt;
       void updatedAt;

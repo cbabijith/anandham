@@ -5,7 +5,7 @@ export default function NotFound() {
       <span className="eyebrow">ANANDHAM LIBRARY</span>
       <h1>This work isn’t available.</h1>
       <p>It may have been moved or is still being prepared.</p>
-      <Link href="/#collection" className="button button-primary">
+      <Link href="/krithis" className="button button-primary">
         Return to the collection
       </Link>
     </main>

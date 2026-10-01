@@ -1,13 +1,15 @@
+import type { Metadata } from 'next';
 import { listKrithis, listDharmam } from '@/lib/library-reader';
 import { SiteHeader } from '@/features/library/site-header';
-import { HomeLibrary } from '@/features/library/home-library';
+import { SavedCollection } from '@/features/library/saved-collection';
 export const dynamic = 'force-dynamic';
-export default async function Home() {
+export const metadata: Metadata = { title: 'Saved readings | Anandham' };
+export default async function SavedPage() {
   const [works, chapters] = await Promise.all([listKrithis(), listDharmam()]);
   return (
     <>
       <SiteHeader />
-      <HomeLibrary works={works} chapters={chapters} />
+      <SavedCollection works={works} chapters={chapters} />
     </>
   );
 }

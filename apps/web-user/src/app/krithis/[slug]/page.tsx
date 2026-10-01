@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getKrithi, listKrithis } from '@anandham/library/repository';
+import { getKrithi, listKrithis } from '@/lib/library-reader';
 import { SiteHeader } from '@/features/library/site-header';
 import { Reader } from '@/features/reader/reader';
 export const dynamic = 'force-dynamic';

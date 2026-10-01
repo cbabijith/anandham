@@ -25,19 +25,25 @@ export function Collection({ works }: { works: Entry[] }) {
     if (sort === 'az') result.sort((a, b) => a.transliteration.localeCompare(b.transliteration));
     return result;
   }, [works, query, category, savedOnly, bookmarks, sort]);
+  const visibleWorks = filtered;
   return (
-    <section id="collection" className="collection section-container">
-      <div className="section-heading">
+    <section
+      id="collection"
+      className="collection section-container"
+      aria-labelledby="krithis-title"
+    >
+      <div className="reading-section-heading">
         <div>
-          <span className="eyebrow">A LIFETIME OF WISDOM</span>
-          <h2>
-            Explore the krithis<span className="accent">.</span>
-          </h2>
-          <p>Poetry, philosophy, and prayers. Read at your own pace.</p>
+          <h1 id="krithis-title" lang="ml">
+            ഗുരുദേവ കൃതികൾ
+          </h1>
+          <p className="section-english">
+            {works.length} original works. Search for a title or browse below.
+          </p>
         </div>
         <div className="collection-count">
           <BookOpen size={17} />
-          {works.length} works to discover
+          {works.length} works to read
         </div>
       </div>
       {recent && (
@@ -54,7 +60,7 @@ export function Collection({ works }: { works: Entry[] }) {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search in Malayalam or English…"
+            placeholder="കൃതികൾ / Search…"
             aria-label="Search krithis"
           />
           {query && (
@@ -73,26 +79,23 @@ export function Collection({ works }: { works: Entry[] }) {
           <span>{bookmarks.length}</span>
         </button>
       </div>
-      <div className="category-tabs" aria-label="Filter by category">
-        <button
-          type="button"
-          onClick={() => setCategory('')}
-          className={!category ? 'active' : ''}
-          aria-pressed={!category}
+      <div className="krithi-filters">
+        <label htmlFor="krithi-category">
+          <span lang="ml">വിഭാഗം · </span>Category
+        </label>
+        <select
+          id="krithi-category"
+          aria-label="Filter by category"
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
         >
-          All works <span>{works.length}</span>
-        </button>
-        {categories.map((c) => (
-          <button
-            type="button"
-            key={c.id}
-            className={category === c.id ? 'active' : ''}
-            onClick={() => setCategory(c.id)}
-            aria-pressed={category === c.id}
-          >
-            {c.name}
-          </button>
-        ))}
+          <option value="">എല്ലാ കൃതികളും · All works</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.malayalam} · {c.name}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="results-bar">
         <p role="status">
@@ -109,7 +112,7 @@ export function Collection({ works }: { works: Entry[] }) {
         </label>
       </div>
       <div className="work-grid">
-        {filtered.map((k) => (
+        {visibleWorks.map((k) => (
           <article className="work-card" key={k.id}>
             <div className="card-top">
               <span className={`category-label category-${k.category}`}>{k.categoryName}</span>
@@ -131,7 +134,7 @@ export function Collection({ works }: { works: Entry[] }) {
             <div className="card-bottom">
               <span>Original text · Malayalam script</span>
               <Link href={`/krithis/${k.slug}`} aria-label={`Read ${k.transliteration}`}>
-                <ArrowUpRight size={21} />
+                <span lang="ml">വായിക്കുക</span> Read <ArrowRight size={18} aria-hidden="true" />
               </Link>
             </div>
           </article>

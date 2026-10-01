@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getDharmam, listDharmam } from '@anandham/library/dharmam-repository';
+import { getDharmam, listDharmam } from '@/lib/library-reader';
 import { SiteHeader } from '@/features/library/site-header';
 import { Reader } from '@/features/reader/reader';
 export const dynamic = 'force-dynamic';
