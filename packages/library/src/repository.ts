@@ -94,6 +94,7 @@ export async function getLibraryStats() {
   const [lastImport] = await getDb()
     .select()
     .from(imports)
+    .where(sql`${imports.sourceUrl} NOT LIKE 'editorial:guru-arul%'`)
     .orderBy(desc(imports.createdAt))
     .limit(1);
   const recentChanges = await getDb()

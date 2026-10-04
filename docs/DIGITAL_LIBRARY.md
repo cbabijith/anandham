@@ -55,7 +55,7 @@ preserved. Both apps must connect to the same database.
 - `packages/library/src/repository.ts`: publication visibility, validation,
   transactions and optimistic revision control.
 - `apps/web-user/src/features/library`: discovery and category/title search.
-- `apps/web-user/src/features/reader`: complete-text reader, zoom, print and share.
+- `apps/web-user/src/features/reader`: complete-text reader, zoom, copy and share.
 - `apps/web-user/src/features/preferences`: theme, saved works and reading history.
 - `apps/web-admin/src/features/library`: protected studio, editor and API guards.
 
@@ -73,6 +73,23 @@ so no rebuild is necessary. Save operations require the current revision; stale
 edits return `409` instead of overwriting another editor's work. Each save and its
 complete snapshot are recorded atomically in the audit table. Original source
 snapshots remain available for comparison.
+
+Both collection editors suggest a URL slug for new entries and provide save
+buttons above and below the form. Existing URLs remain stable when titles change.
+Choose **Sree Narayana Dharmam** to add or edit chapters, passages, translations,
+and explanations using the same draft/publish workflow.
+
+Owners can open **Team members**, enter an email address and a password of at
+least 12 characters, and select **Add team member**. Share those credentials
+directly with the teammate; no invitation email is sent. Editors can immediately
+sign in and add, edit, publish, or archive both collections. Only owners can
+manage accounts. The Team page also supports password resets and disabling or
+reenabling access; each action revokes existing sessions. Password fields on
+sign-in, account creation, and reset forms include a show/hide eye button.
+
+Migration `0002` makes existing administrators owners and assigns new team
+accounts the editor role. Deploy using `npm run db:setup` before starting the new
+admin version; never recreate the production database.
 
 Passwords use salted scrypt hashes. Sessions use random 256-bit tokens, hashed in
 the database, with eight-hour HttpOnly/SameSite=Strict cookies (Secure in
@@ -108,6 +125,9 @@ command arguments, issue bodies, or screenshots.
 | `GET /api/library/krithis/:id` (studio)   | Admin               | Full entry and editorial history                              |
 | `PATCH /api/library/krithis/:id` (studio) | Admin, same-origin  | Validated full update; requires `revision`                    |
 | `GET /api/library/health` (studio)        | Public              | Database readiness without secrets                            |
+| `GET /api/library/team` (studio)        | Owner               | Team list without passwords or hashes                         |
+| `POST /api/library/team` (studio)       | Owner, same-origin  | Creates an editor from `{email,password}`                      |
+| `PATCH /api/library/team/:id` (studio)  | Owner, same-origin  | `reset-password`, `disable`, or `enable`; revokes sessions       |
 
 Public success envelopes use `{data,total,page,limit}` or `{data}`. Errors use
 `{error}` with 400/401/403/404/409/413/415/429/503 as appropriate. A save payload
@@ -179,6 +199,66 @@ railway up --project 53f510a3-ec02-44fe-9309-b64ba5354ca7 --environment producti
 Check deployment logs and both health endpoints after each release. The GitHub
 commit SHA in the deployment metadata identifies the release being served.
 
+## Vercel reader with Railway backend
+
+The production studio is `https://admin.anandham.online/library`. Set
+`LIBRARY_ADMIN_ORIGIN=https://admin.anandham.online` and
+`LIBRARY_ADMIN_ADDITIONAL_ORIGINS=https://web-admin-production-1fe2.up.railway.app`
+on the Railway admin service. The additional origins are an explicit,
+comma-separated list; other origins remain rejected. The reader link uses
+`LIBRARY_READER_URL=https://anandham.online`. Deploy the admin after changing its
+runtime variables, then verify sign-in and sign-out on both allowed domains.
+
+`Dockerfile.library` normalizes public directories to `755` and public files to
+`644` so assets uploaded with restrictive local permissions can be served by
+the non-root runtime. Check `/images/anandham-brand.png` returns `200` after a
+studio deployment.
+
+Verified on 2026-10-03 after Railway deployment
+`e78dec5c-f4c3-4255-a13d-86df9d17f894`: both admin domains accept the existing
+owner login, serve the dashboard and logo, and revoke sessions on sign-out.
+Missing and untrusted origins return `403`. Browser sign-in/sign-out on the
+custom domain has no console errors. All 16 library tests and the admin
+production build pass; the live reader still reports 60 published Krithis and
+21 published Dharmam chapters.
+
+The Vercel project `abijithcbs-projects/anandham-web-user` serves the reader at
+`https://anandham.online` and `https://anandham-web-user.vercel.app`. Its root
+directory is `apps/web-user`; run the Vercel CLI from the monorepo root.
+
+Set `LIBRARY_API_URL` to
+`https://web-user-production-b9c9.up.railway.app/api` for Production and Preview.
+Server-rendered pages fetch published krithis and Dharmam chapters from that
+Railway service. A `beforeFiles` rewrite also forwards `/api/*` requests,
+including health checks, search and pagination, to the same backend. Requests
+are not cached, so editorial updates remain visible without redeploying Vercel.
+Railway keeps its private PostgreSQL connection; the Vercel reader does not need
+`DATABASE_URL` or administrator credentials. Without `LIBRARY_API_URL`, the app
+continues to use PostgreSQL directly for Railway and local development.
+
+The Vercel configuration builds only `web-user` and uses `npm ci` at the
+monorepo root. `.vercelignore` excludes local credentials, caches, test outputs,
+and mobile binaries from CLI uploads.
+
+Deploy the current local reader using:
+
+```sh
+vercel deploy --prod --scope abijithcbs-projects
+```
+
+For a release that is verified before domain promotion:
+
+```sh
+vercel deploy --prod --skip-domain --scope abijithcbs-projects
+vercel curl /api/health --deployment DEPLOYMENT_URL --scope abijithcbs-projects
+vercel promote DEPLOYMENT_URL --scope abijithcbs-projects
+```
+
+Vercel's Git integration currently tracks `main` for automatic production
+deployments. The current library work is on `codex/guru-digital-library`; use
+the CLI release flow above until those changes are merged or the production
+branch is deliberately updated in Vercel.
+
 ## Verification
 
 - `npm run test:library`: 60-entry coverage, checksums, expected verse numbering,
@@ -186,7 +266,9 @@ commit SHA in the deployment metadata identifies the release being served.
 - `npm run test:library:e2e`: all 60 public API texts match their source checksums;
   mobile reading, zoom, themes, bookmarks, filters; admin authentication,
   source isolation, draft/publish/archive lifecycle, stale revisions, CSRF,
-  audit, logout and pre-hydration form safety.
+  audit, logout and pre-hydration form safety. Team tests cover owner-only account
+  creation, editor access to both collections, show/hide passwords, password
+  resets, disabling/reenabling access, and session revocation.
 - `npm run build -w @anandham/web-user` and
   `npm run build -w @anandham/web-admin` include TypeScript validation.
 
@@ -268,3 +350,64 @@ three Dharmam browser workflows (text preservation, mobile reading, and secured
 admin publication/edit history), responsive visual checks at 320–1440 px, both
 production builds and `scripts/verify-live-library.mjs` for all 60 krithis plus
 the five supplied Dharmam chapters.
+
+## Team management release — 26 September 2026
+
+Railway admin deployment `104cc883-c478-41a8-9861-89a642c4990b` succeeded
+from the local workspace using the CLI. The service root is `/` so
+`Dockerfile.library` can build the monorepo; the earlier `web-admin` root caused
+a missing-directory build failure. The pre-deploy migration preserved all
+existing entries and passwords.
+
+Eleven package tests pass. All nine browser scenarios pass, with the team
+workflow and no-JavaScript sign-in check rerun after their final adjustments.
+The admin production build and targeted lint checks pass. Live browser checks
+verified owner sign-in, password visibility, adding an editor, creating and
+editing private krithi and Dharmam drafts, owner-only team access, password reset,
+and session revocation on reset/disable. Temporary test accounts, drafts,
+sessions, and audit entries were removed afterward. The public reader retains
+60 published krithis and 10 Dharmam chapters.
+
+## Guru Arul topic and quote management (4 October 2026)
+
+Guru Arul is now stored in the shared PostgreSQL library database. The supplied
+182 complete quotes appear beneath their 20 populated Malayalam topic headings.
+The final supplied heading, `ത്യാഗം`, has no quote text and is retained as a draft
+21st topic. The original attachment is preserved in
+`packages/library/data/sources/guru-arul-2026-10-04.txt`; source parity tests cover
+all text, headings, attribution, ordering, and the original 46 bookmark IDs.
+
+In Library Studio, open **Guru Arul** (`/library/guru-arul`). Owners and editors can:
+
+- Create, rename, order, publish, archive, or delete a topic.
+- Add and edit complete quote text and attribution, reorder quotes with the arrows,
+  and publish, archive, or delete individual quotes within a topic.
+- Preview the text before saving. A quote is public only when both the quote and
+  its topic are published. An empty topic can be saved as a draft.
+
+Deleting a quote takes effect when the topic is saved; deleting a whole topic
+requires confirmation and removes its quotes together. Updates and deletions
+check the revision, and audit snapshots remain after deletion. The import runs
+once, so later setup runs preserve editorial changes and do not recreate deleted
+source topics. Quote IDs remain stable across edits and reordering.
+
+The public Guru Arul page, home page search and featured quote, and Saved page all
+read the same current published collection. The public API is `GET /api/guru-arul`;
+admin CRUD is under `/api/library/guru-arul`. The public API excludes private
+quotes and editorial metadata. Database failures produce a service error rather
+than resurrecting old hard-coded content. Existing browser tabs reflect changes
+on navigation or refresh.
+
+Release order: run `npm run db:setup` with the production database configured,
+then deploy the Railway public/backend and admin services with this code. The
+migration is `0003_numerous_jane_foster.sql` (after the existing `0002` team
+migration). For a Vercel reader using `LIBRARY_API_URL`, deploy the new Railway
+public API before the reader build, since the reader now fetches `/guru-arul`
+through that backend. Use the same shared database for both Railway services.
+The local implementation and test seed alone do not publish this release.
+
+Focused verification: `npm run test:library` and
+`npx playwright test tests/guru-arul.spec.ts tests/homepage.spec.ts` against the
+dedicated local database. These cover content parity, authorization, publishing,
+editing, ordering, stable saved quotes, deletion, stale revision conflicts,
+import persistence, empty collections, and responsive layouts.

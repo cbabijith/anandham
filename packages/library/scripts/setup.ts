@@ -6,6 +6,7 @@ import { getDb, getSql } from '../src/db';
 import { bootstrapAdmin } from '../src/auth';
 import { krithis, imports, dharmamChapters } from '../src/schema';
 import { dharmamInput } from '../src/dharmam-validation';
+import { seedGuruArul } from '../src/guru-arul-seed';
 
 try {
   const db = getDb();
@@ -54,6 +55,9 @@ try {
     .onConflictDoNothing()
     .returning({ id: dharmamChapters.id });
   console.log(`${dharmamAdded.length} Dharmam chapters inserted; existing edits preserved.`);
+  console.log(
+    `${await seedGuruArul()} Guru Arul topics inserted; existing edits and deletions preserved.`,
+  );
   if (process.env.LIBRARY_ADMIN_EMAIL && process.env.LIBRARY_ADMIN_PASSWORD)
     await bootstrapAdmin(process.env.LIBRARY_ADMIN_EMAIL, process.env.LIBRARY_ADMIN_PASSWORD);
   console.log(

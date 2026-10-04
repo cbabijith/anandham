@@ -1,13 +1,15 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import { CategoryChips } from '../library/category-chips';
 import { ReadingTabs } from '../library/reading-tabs';
 import { ArrowLeft, Bookmark, Copy, Search, X } from 'lucide-react';
-import { guruArulCategories, guruArulQuotes } from '@anandham/library/guru-arul';
+import type { GuruArulCollection } from '@anandham/library/guru-arul';
 import { normalizeSearch } from '@anandham/library/catalogue';
 import { useBookmarks } from '../preferences/preferences';
 
-export function QuoteCollection() {
+export function QuoteCollection({ collection }: { collection: GuruArulCollection }) {
+  const { categories: guruArulCategories, quotes: guruArulQuotes } = collection;
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('');
   const [savedOnly, setSavedOnly] = useState(false);
@@ -23,6 +25,10 @@ export function QuoteCollection() {
       )
     );
   });
+  const groups = guruArulCategories
+    .map((topic) => ({ ...topic, quotes: filtered.filter((quote) => quote.category === topic.id) }))
+    .filter((topic) => topic.quotes.length);
+  const savedCount = guruArulQuotes.filter((quote) => bookmarks.includes(quote.id)).length;
   async function copyQuote(text: string, attribution: string) {
     try {
       await navigator.clipboard.writeText(`${text}\n— ${attribution}`);
@@ -40,7 +46,8 @@ export function QuoteCollection() {
           <h1 lang="ml">ഗുരു അരുൾ</h1>
           <p lang="ml">വായിക്കാനും ചിന്തിക്കാനും ഗുരുവിന്റെ വാക്കുകൾ.</p>
           <p className="section-english">
-            Read by topic, save a favourite, or copy a quote to keep.
+            {guruArulCategories.length} topics · {guruArulQuotes.length} quotes. Read by topic, save
+            a favourite, or copy a quote to keep.
           </p>
         </div>
       </header>
@@ -65,25 +72,20 @@ export function QuoteCollection() {
           aria-pressed={savedOnly}
           onClick={() => setSavedOnly(!savedOnly)}
         >
-          <Bookmark size={20} /> Saved <span>{bookmarks.length}</span>
+          <Bookmark size={20} /> Saved <span>{savedCount}</span>
         </button>
       </div>
-      <div className="arul-topics" aria-label="Filter quotes by topic">
-        <button type="button" aria-pressed={!category} onClick={() => setCategory('')}>
-          All quotes · {guruArulQuotes.length}
-        </button>
-        {guruArulCategories.map((topic) => (
-          <button
-            type="button"
-            key={topic.id}
-            aria-pressed={category === topic.id}
-            onClick={() => setCategory(topic.id)}
-          >
-            <span lang="ml">{topic.title}</span> · {topic.english}
-            <span>{guruArulQuotes.filter((quote) => quote.category === topic.id).length}</span>
-          </button>
-        ))}
-      </div>
+      <CategoryChips
+        label="Filter Guru Arul by topic"
+        allLabel="All quotes"
+        total={guruArulQuotes.length}
+        options={guruArulCategories.map((topic) => ({
+          ...topic,
+          count: guruArulQuotes.filter((quote) => quote.category === topic.id).length,
+        }))}
+        value={category}
+        onChange={setCategory}
+      />
       <p className="arul-results" role="status">
         {filtered.length} {filtered.length === 1 ? 'quote' : 'quotes'}
         {savedOnly ? ' saved on this device' : ''}
@@ -91,40 +93,65 @@ export function QuoteCollection() {
       <p className="copy-status" role="status">
         {message}
       </p>
-      <div className="arul-quote-list">
-        {filtered.map((quote) => (
-          <article id={quote.id} className="arul-quote" key={quote.id}>
-            <div className="quote-meta">
-              <span lang="ml">
-                {guruArulCategories.find((topic) => topic.id === quote.category)!.title}
+      <div className="arul-groups">
+        {groups.map((topic) => (
+          <section
+            className="arul-topic-section"
+            id={`topic-${topic.id}`}
+            key={topic.id}
+            aria-labelledby={`heading-${topic.id}`}
+          >
+            <header className="arul-topic-heading">
+              <div>
+                <h2 id={`heading-${topic.id}`} lang="ml">
+                  {topic.title}
+                </h2>
+                <p>{topic.english}</p>
+              </div>
+              <span>
+                {topic.quotes.length} {topic.quotes.length === 1 ? 'quote' : 'quotes'}
               </span>
-              <a href={`#${quote.id}`} aria-label={`Link to quote ${quote.id}`}>
-                #{String(guruArulQuotes.indexOf(quote) + 1).padStart(2, '0')}
-              </a>
+            </header>
+            <div className="arul-quote-list">
+              {topic.quotes.map((quote) => (
+                <article id={quote.id} className="arul-quote" key={quote.id}>
+                  <div className="quote-meta">
+                    <span lang="ml">
+                      {guruArulCategories.find((topic) => topic.id === quote.category)!.title}
+                    </span>
+                    <a href={`#${quote.id}`} aria-label={`Link to quote ${quote.id}`}>
+                      #{String(guruArulQuotes.indexOf(quote) + 1).padStart(2, '0')}
+                    </a>
+                  </div>
+                  <blockquote lang="ml">{quote.text}</blockquote>
+                  <p className="quote-attribution" lang="ml">
+                    — {quote.attribution}
+                  </p>
+                  <div className="quote-actions">
+                    <button
+                      type="button"
+                      aria-pressed={bookmarks.includes(quote.id)}
+                      onClick={() => toggle(quote.id)}
+                      aria-label={`${bookmarks.includes(quote.id) ? 'Unsave' : 'Save'} quote ${quote.id}`}
+                    >
+                      <Bookmark
+                        size={19}
+                        fill={bookmarks.includes(quote.id) ? 'currentColor' : 'none'}
+                      />
+                      {bookmarks.includes(quote.id) ? 'Saved' : 'Save quote'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => copyQuote(quote.text, quote.attribution)}
+                      aria-label={`Copy quote ${quote.id}`}
+                    >
+                      <Copy size={18} /> Copy quote
+                    </button>
+                  </div>
+                </article>
+              ))}
             </div>
-            <blockquote lang="ml">{quote.text}</blockquote>
-            <p className="quote-attribution" lang="ml">
-              — {quote.attribution}
-            </p>
-            <div className="quote-actions">
-              <button
-                type="button"
-                aria-pressed={bookmarks.includes(quote.id)}
-                onClick={() => toggle(quote.id)}
-                aria-label={`${bookmarks.includes(quote.id) ? 'Unsave' : 'Save'} quote ${quote.id}`}
-              >
-                <Bookmark size={19} fill={bookmarks.includes(quote.id) ? 'currentColor' : 'none'} />
-                {bookmarks.includes(quote.id) ? 'Saved' : 'Save quote'}
-              </button>
-              <button
-                type="button"
-                onClick={() => copyQuote(quote.text, quote.attribution)}
-                aria-label={`Copy quote ${quote.id}`}
-              >
-                <Copy size={18} /> Copy quote
-              </button>
-            </div>
-          </article>
+          </section>
         ))}
       </div>
       {!filtered.length && (

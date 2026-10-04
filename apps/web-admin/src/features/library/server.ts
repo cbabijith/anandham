@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 import { getAdmin } from '@anandham/library/auth';
 import { LibraryError } from '@anandham/library/repository';
+import { isAllowedOrigin } from '@anandham/library/request-origin';
 export const COOKIE = 'anandham_library_session';
 export async function currentAdmin() {
   return getAdmin((await cookies()).get(COOKIE)?.value);
@@ -19,10 +20,25 @@ export async function requireApiAdmin() {
   if (!admin) throw new LibraryError('Please sign in to continue.', 401);
   return admin;
 }
+export async function requireOwner() {
+  const admin = await requireAdmin();
+  if (admin.role !== 'owner') redirect('/library');
+  return admin;
+}
+export async function requireApiOwner() {
+  const admin = await requireApiAdmin();
+  if (admin.role !== 'owner')
+    throw new LibraryError('Only the owner can manage team members.', 403);
+  return admin;
+}
 export function checkOrigin(request: Request) {
   const origin = request.headers.get('origin');
-  const allowed = process.env.LIBRARY_ADMIN_ORIGIN || new URL(request.url).origin;
-  if (!origin || origin !== allowed) throw new LibraryError('Request origin is not allowed.', 403);
+  const allowed = [
+    process.env.LIBRARY_ADMIN_ORIGIN || new URL(request.url).origin,
+    ...(process.env.LIBRARY_ADMIN_ADDITIONAL_ORIGINS?.split(',') ?? []),
+  ];
+  if (!isAllowedOrigin(origin, allowed))
+    throw new LibraryError('Request origin is not allowed.', 403);
 }
 export async function readJson(request: Request) {
   if (!request.headers.get('content-type')?.startsWith('application/json'))

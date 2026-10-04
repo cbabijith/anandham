@@ -7,7 +7,10 @@ export async function POST(request: Request) {
   try {
     checkOrigin(request);
     const input = z
-      .object({ email: z.email().max(254), password: z.string().min(1).max(256) })
+      .object({
+        email: z.string().trim().toLowerCase().pipe(z.email().max(254)),
+        password: z.string().min(1).max(256),
+      })
       .parse(await readJson(request));
     const token = await authenticate(input.email, input.password);
     const response = NextResponse.json({ ok: true });

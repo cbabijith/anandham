@@ -5,6 +5,7 @@ export default async function ProtectedLayout({ children }: { children: React.Re
   return (
     <AdminShell
       email={admin.email}
+      role={admin.role}
       readerUrl={process.env.LIBRARY_READER_URL ?? 'http://localhost:3000'}
     >
       {children}

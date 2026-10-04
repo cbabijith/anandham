@@ -8,6 +8,9 @@ const admin =
 const corpus = JSON.parse(
   readFileSync(new URL('../packages/library/data/krithis.json', import.meta.url), 'utf8'),
 );
+const quotes = JSON.parse(
+  readFileSync(new URL('../packages/library/data/guru-arul.json', import.meta.url), 'utf8'),
+);
 const chapters = JSON.parse(
   readFileSync(new URL('../packages/library/data/dharmam.json', import.meta.url), 'utf8'),
 );
@@ -32,6 +35,11 @@ for (let offset = 0; offset < corpus.length; offset += 4) {
 }
 assert.equal((await fetch(`${admin}/api/library/krithis`)).status, 401);
 assert.equal((await fetch(`${admin}/api/library/dharmam`)).status, 401);
+assert.equal((await fetch(`${admin}/api/library/guru-arul`)).status, 401);
+const arul = (await json(`${reader}/api/guru-arul`)).data;
+assert.deepEqual(arul.quotes, quotes);
+assert.equal(arul.categories.length, 20);
+assert.ok(arul.quotes.every((quote) => !('status' in quote) && !('revision' in quote)));
 assert.equal((await json(`${reader}/api/dharmam`)).total, chapters.length);
 for (const chapter of chapters) {
   const { data } = await json(`${reader}/api/dharmam/${chapter.slug}`);
@@ -59,5 +67,5 @@ assert.ok(
   signIn.url.endsWith('/library/login') || (await signIn.text()).includes('/library/login'),
 );
 console.log(
-  `PASS: both live services healthy; all 60 krithis match source checksums; all ${chapters.length} Dharmam chapters match supplied passages; reader pages, private API protection, missing-content handling and admin sign-in redirect verified.`,
+  `PASS: both live services healthy; all 60 krithis match source checksums; all ${chapters.length} Dharmam chapters and ${quotes.length} Guru Arul quotes match supplied text; reader pages, private API protection, missing-content handling and admin sign-in redirect verified.`,
 );

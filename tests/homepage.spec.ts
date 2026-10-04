@@ -32,11 +32,14 @@ test('library keeps all 60 works and category, sort and Malayalam search work', 
 }) => {
   await page.goto('/krithis');
   await expect(page.locator('.work-card')).toHaveCount(60);
-  await page.getByRole('combobox', { name: 'Filter by category' }).selectOption('philosophy');
+  await page
+    .getByRole('group', { name: 'Filter Krithis by category' })
+    .getByRole('button', { name: /Philosophy/ })
+    .click();
   await expect(page.locator('.work-card')).toHaveCount(11);
   await page.getByRole('combobox', { name: 'Sort works' }).selectOption('az');
   await expect(page.locator('.work-card').first()).toContainText('Advaita Deepika');
-  await page.getByRole('combobox', { name: 'Filter by category' }).selectOption('');
+  await page.getByRole('button', { name: 'All works · 60', exact: true }).click();
   await page.getByRole('textbox', { name: 'Search krithis' }).fill('ദൈവദശകം');
   await expect(page.locator('.work-card')).toHaveCount(1);
   await page.getByRole('link', { name: 'Read Daiva Dasakam', exact: true }).click();
@@ -55,7 +58,8 @@ test('all supplied quotes remain intact, searchable, copyable and saved', async 
 }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await page.goto('/guru-arul');
-  await expect(page.locator('.arul-quote')).toHaveCount(46);
+  await expect(page.locator('.arul-quote')).toHaveCount(182);
+  await expect(page.locator('.arul-topic-heading h2')).toHaveCount(20);
   expect(await page.locator('.arul-quote blockquote').allTextContents()).toEqual(
     quotes.map((quote: { text: string }) => quote.text),
   );
@@ -63,7 +67,7 @@ test('all supplied quotes remain intact, searchable, copyable and saved', async 
   await expect(page.locator('.arul-quote')).toHaveCount(15);
   await page.getByRole('button', { name: /Religion/ }).click();
   await expect(page.locator('.arul-quote')).toHaveCount(31);
-  await page.getByRole('button', { name: 'All quotes · 46' }).click();
+  await page.getByRole('button', { name: 'All quotes · 182' }).click();
   await page.getByRole('textbox', { name: 'Search Guru Arul' }).fill('ജാതികൊണ്ട് ഒരു ഗുണവുമില്ല');
   await expect(page.locator('.arul-quote')).toHaveCount(1);
   await page.getByRole('button', { name: 'Save quote jathi-01', exact: true }).click();
@@ -80,7 +84,7 @@ test('all supplied quotes remain intact, searchable, copyable and saved', async 
   await page.getByRole('button', { name: 'Unsave quote jathi-01', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'No quotes found' })).toBeVisible();
   await page.getByRole('button', { name: 'Show all quotes', exact: true }).click();
-  await expect(page.locator('.arul-quote')).toHaveCount(46);
+  await expect(page.locator('.arul-quote')).toHaveCount(182);
 });
 
 test('Saved combines krithis, chapters and quotes and persists removal', async ({ page }) => {
@@ -161,7 +165,12 @@ test('mobile reader tools stay below the header at maximum text size', async ({ 
   for (const path of ['/krithis/daiva-dasakam', '/dharmam/shuddhi-panchakam']) {
     await page.goto(path);
     const increase = page.getByRole('button', { name: 'Increase text size' });
-    while (await increase.isEnabled()) await increase.click();
+    await page.getByRole('button', { name: 'Reset text size' }).click();
+    await expect(page.locator('.reading-text')).toHaveCSS('font-size', '22px');
+    for (let size = 24; size <= 40; size += 2) {
+      await increase.click();
+      await expect(page.locator('.reading-text')).toHaveCSS('font-size', `${size}px`);
+    }
     await expect(page.locator('.reading-text')).toHaveCSS('font-size', '40px');
     await page.evaluate(() => window.scrollTo({ top: 1000, behavior: 'instant' }));
     const header = (await page.locator('.site-header').boundingBox())!;
@@ -171,5 +180,59 @@ test('mobile reader tools stay below the header at maximum text size', async ({ 
       true,
     );
     await expect(page.getByRole('navigation', { name: 'Mobile navigation' })).toBeInViewport();
+  }
+});
+
+test('category chips filter both collections on mobile and desktop without dropdowns or overflow', async ({
+  page,
+}) => {
+  for (const width of [320, 390, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const collection of [
+      {
+        path: '/krithis',
+        label: 'Filter Krithis by category',
+        count: 11,
+        choice: 'Philosophy',
+        matches: 11,
+        cards: '.work-card',
+        all: 'All works · 60',
+        total: 60,
+      },
+      {
+        path: '/guru-arul',
+        label: 'Filter Guru Arul by topic',
+        count: 21,
+        choice: 'Meat consumption',
+        matches: 10,
+        cards: '.arul-quote',
+        all: 'All quotes · 182',
+        total: 182,
+      },
+    ]) {
+      await page.goto(collection.path);
+      const chips = page.getByRole('group', { name: collection.label });
+      await expect(chips.getByRole('button')).toHaveCount(collection.count);
+      await expect(page.getByRole('combobox', { name: /Filter/ })).toHaveCount(0);
+      const choice = chips.getByRole('button', { name: new RegExp(collection.choice) });
+      await choice.click();
+      await expect(choice).toHaveAttribute('aria-pressed', 'true');
+      await expect(page.locator(collection.cards)).toHaveCount(collection.matches);
+      await expect(choice).toBeInViewport();
+      expect((await choice.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+        true,
+      );
+      const all = chips.getByRole('button', { name: collection.all, exact: true });
+      await all.focus();
+      await page.keyboard.press('Enter');
+      await expect(all).toHaveAttribute('aria-pressed', 'true');
+      await expect(page.locator(collection.cards)).toHaveCount(collection.total);
+      if (width === 390 || width === 1440)
+        await page.screenshot({
+          caret: 'initial',
+          path: `test-results/chips-${collection.path.slice(1)}-${width}.png`,
+        });
+    }
   }
 });

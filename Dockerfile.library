@@ -11,6 +11,9 @@ COPY apps/gurusmruthi/package.json ./apps/gurusmruthi/package.json
 RUN npm ci --include=dev --workspace=@anandham/library --workspace=@anandham/${LIBRARY_APP} --include-workspace-root
 RUN npm run build --workspace=@anandham/${LIBRARY_APP}
 RUN chown -R node:node apps/${LIBRARY_APP}/.next
+# Uploaded assets may retain owner-only permissions from the workstation.
+RUN find apps/${LIBRARY_APP}/public -type d -exec chmod 755 {} + \
+ && find apps/${LIBRARY_APP}/public -type f -exec chmod 644 {} +
 ENV NODE_ENV=production
 ENV LIBRARY_APP=${LIBRARY_APP}
 ENV PORT=3000

@@ -85,7 +85,10 @@ test('desktop reading layout and categories', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1050 });
   await page.goto('/krithis');
   await page.screenshot({ caret: 'initial', path: 'test-results/reader-desktop.png' });
-  await page.getByRole('combobox', { name: 'Filter by category' }).selectOption('philosophy');
+  await page
+    .getByRole('group', { name: 'Filter Krithis by category' })
+    .getByRole('button', { name: /Philosophy/ })
+    .click();
   await expect(page.locator('.work-card')).toHaveCount(11);
   await page.getByRole('combobox', { name: 'Sort works' }).selectOption('az');
   await expect(page.locator('.work-card').first()).toContainText('Advaita Deepika');
@@ -178,6 +181,6 @@ test('sign-in cannot submit before JavaScript initializes', async ({ browser }) 
   const page = await context.newPage();
   await page.goto(`${adminUrl}/library/login`);
   await expect(page.locator('form')).toHaveAttribute('method', 'post');
-  await expect(page.locator('form button')).toBeDisabled();
+  await expect(page.locator('form button[type="submit"]')).toBeDisabled();
   await context.close();
 });

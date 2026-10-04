@@ -5,6 +5,7 @@ const subscribe = () => () => {};
 const ready = () => true;
 const serverReady = () => false;
 import { ArrowRight } from 'lucide-react';
+import { PasswordField } from './password-field';
 export function LoginForm() {
   const router = useRouter();
   const hydrated = useSyncExternalStore(subscribe, ready, serverReady);
@@ -54,27 +55,24 @@ export function LoginForm() {
               maxLength={254}
             />
           </label>
-          <label>
-            Password
-            <input
-              name="password"
-              type="password"
-              autoComplete="current-password"
-              required
-              maxLength={256}
-            />
-          </label>
+          <PasswordField
+            name="password"
+            autoComplete="current-password"
+            required
+            maxLength={256}
+            disabled={pending}
+          />
           {error && (
             <p role="alert" className="la-message error">
               {error}
             </p>
           )}
-          <button className="la-button primary" disabled={pending || !hydrated}>
+          <button type="submit" className="la-button primary" disabled={pending || !hydrated}>
             {pending ? 'Signing in…' : 'Sign in'}
             <ArrowRight size={17} />
           </button>
         </form>
-        <small>Access is reserved for library administrators.</small>
+        <small>Sign in with the email and password provided by your library owner.</small>
       </div>
     </div>
   );

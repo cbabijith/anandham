@@ -9,10 +9,15 @@ import {
 } from 'lucide-react';
 import { getLibraryStats } from '@anandham/library/repository';
 import { listDharmam } from '@anandham/library/dharmam-repository';
+import { listGuruArulTopics } from '@anandham/library/guru-arul-repository';
 import { requireAdmin } from '@/features/library/server';
 export default async function Overview() {
   await requireAdmin();
-  const [stats, dharmam] = await Promise.all([getLibraryStats(), listDharmam(true)]);
+  const [stats, dharmam, arul] = await Promise.all([
+    getLibraryStats(),
+    listDharmam(true),
+    listGuruArulTopics(),
+  ]);
   return (
     <>
       <div className="la-page-heading">
@@ -65,6 +70,18 @@ export default async function Overview() {
           Care for the verses and Malayalam explanations, and add the next chapter when its text is
           ready.
         </p>
+      </section>
+      <section className="la-panel">
+        <div className="la-panel-heading">
+          <h2>Guru Arul</h2>
+          <Link className="la-button" href="/library/guru-arul">
+            Manage Guru Arul <ArrowRight size={16} />
+          </Link>
+        </div>
+        <p>
+          {arul.length} topics · {arul.reduce((sum, topic) => sum + topic.quotes.length, 0)} quotes
+        </p>
+        <p>Edit topic headings, arrange quotes, and publish new words for reflection.</p>
       </section>
       <div className="la-overview-grid">
         <section className="la-panel">

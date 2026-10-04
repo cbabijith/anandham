@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { listKrithis, listDharmam } from '@/lib/library-reader';
+import { listKrithis, listDharmam, getGuruArul } from '@/lib/library-reader';
 import { SiteHeader } from '@/features/library/site-header';
 import { SavedCollection } from '@/features/library/saved-collection';
 export const dynamic = 'force-dynamic';
@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 export default async function SavedPage() {
-  const [works, chapters] = await Promise.all([listKrithis(), listDharmam()]);
+  const [works, chapters, arul] = await Promise.all([listKrithis(), listDharmam(), getGuruArul()]);
   return (
     <>
       <SiteHeader />
-      <SavedCollection works={works} chapters={chapters} />
+      <SavedCollection works={works} chapters={chapters} quotes={arul.quotes} />
     </>
   );
 }

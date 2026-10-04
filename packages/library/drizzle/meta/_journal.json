@@ -15,6 +15,20 @@
       "when": 1790362712712,
       "tag": "0001_tough_wildside",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790365032291,
+      "tag": "0002_illegal_rhodey",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791137790950,
+      "tag": "0003_numerous_jane_foster",
+      "breakpoints": true
     }
   ]
 }

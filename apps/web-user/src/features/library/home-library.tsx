@@ -5,14 +5,22 @@ import { useMemo, useState } from 'react';
 import { ArrowRight, BookOpen, Compass, ListOrdered, Quote, Search, X } from 'lucide-react';
 import type { KrithiSummary } from '@anandham/library/schema';
 import type { DharmamSummary } from '@anandham/library/dharmam-repository';
-import { guruArulQuotes } from '@anandham/library/guru-arul';
+import type { GuruArulQuote } from '@anandham/library/guru-arul';
 import { normalizeSearch } from '@anandham/library/catalogue';
 import { usePreference } from '../preferences/preferences';
 
 type Work = Omit<KrithiSummary, 'createdAt' | 'updatedAt'>;
 type Chapter = Omit<DharmamSummary, 'createdAt' | 'updatedAt'>;
 
-export function HomeLibrary({ works, chapters }: { works: Work[]; chapters: Chapter[] }) {
+export function HomeLibrary({
+  works,
+  chapters,
+  quotes: guruArulQuotes,
+}: {
+  works: Work[];
+  chapters: Chapter[];
+  quotes: GuruArulQuote[];
+}) {
   const [query, setQuery] = useState('');
   const [lastRead] = usePreference('anandham-last-read', '');
   const recent = works.find((work) => work.slug === lastRead);
@@ -50,8 +58,8 @@ export function HomeLibrary({ works, chapters }: { works: Work[]; chapters: Chap
           href: `/guru-arul#${quote.id}`,
         })),
     ];
-  }, [query, works, chapters]);
-  const quote = guruArulQuotes.find((item) => item.id === 'jathi-13')!;
+  }, [query, works, chapters, guruArulQuotes]);
+  const quote = guruArulQuotes.find((item) => item.id === 'jathi-13') ?? guruArulQuotes[0];
   return (
     <main id="main-content" className="home-page app-container">
       <section className="home-welcome">
@@ -204,11 +212,15 @@ export function HomeLibrary({ works, chapters }: { works: Work[]; chapters: Chap
                   View all <ArrowRight size={16} />
                 </Link>
               </div>
-              <Link href={`/guru-arul#${quote.id}`} className="home-quote">
-                <Quote size={24} aria-hidden="true" />
-                <blockquote lang="ml">{quote.text}</blockquote>
-                <p lang="ml">— {quote.attribution}</p>
-              </Link>
+              {quote ? (
+                <Link href={`/guru-arul#${quote.id}`} className="home-quote">
+                  <Quote size={24} aria-hidden="true" />
+                  <blockquote lang="ml">{quote.text}</blockquote>
+                  <p lang="ml">— {quote.attribution}</p>
+                </Link>
+              ) : (
+                <p>New quotes will appear here when published.</p>
+              )}
             </section>
             <section className="home-section home-discover">
               <Compass size={28} aria-hidden="true" />

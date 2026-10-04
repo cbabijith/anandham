@@ -2,6 +2,7 @@ import 'server-only';
 import { cache } from 'react';
 import type { DharmamChapter, Krithi, KrithiSummary } from '@anandham/library/schema';
 import type { DharmamSummary } from '@anandham/library/dharmam-repository';
+import type { GuruArulCollection } from '@anandham/library/guru-arul';
 
 type Serialized<T> = Omit<T, 'createdAt' | 'updatedAt'> & {
   createdAt: string;
@@ -38,7 +39,8 @@ async function listFromBackend<T>(collection: string): Promise<T[]> {
     const result = (await response.json()) as { data: T[]; total: number };
     records.push(...result.data);
     if (records.length >= result.total) return records;
-    if (result.data.length === 0) throw new Error('The library backend returned an incomplete list.');
+    if (result.data.length === 0)
+      throw new Error('The library backend returned an incomplete list.');
   }
 }
 
@@ -77,4 +79,14 @@ export const getDharmam = cache(async (slug: string): Promise<PublicChapter | un
   const repository = await import('@anandham/library/dharmam-repository');
   const record = await repository.getDharmam(slug);
   return record ? serializeDates(repository.publicDharmam(record)) : undefined;
+});
+
+export const getGuruArul = cache(async (): Promise<GuruArulCollection> => {
+  if (backendUrl()) {
+    const response = await fetchLibrary('/guru-arul');
+    if (!response.ok) throw new Error('Guru Arul is temporarily unavailable.');
+    return ((await response.json()) as { data: GuruArulCollection }).data;
+  }
+  const repository = await import('@anandham/library/guru-arul-repository');
+  return repository.readGuruArul();
 });

@@ -1,4 +1,5 @@
 import { pgTable, text, integer, timestamp, jsonb, index } from 'drizzle-orm/pg-core';
+import type { GuruArulEntry } from './guru-arul';
 
 export const krithis = pgTable(
   'library_krithis',
@@ -30,6 +31,10 @@ export const admins = pgTable('library_admins', {
   id: text('id').primaryKey(),
   email: text('email').notNull().unique(),
   passwordHash: text('password_hash').notNull(),
+  role: text('role', { enum: ['owner', 'editor'] })
+    .notNull()
+    .default('editor'),
+  disabledAt: timestamp('disabled_at', { withTimezone: true }),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 export const sessions = pgTable('library_sessions', {
@@ -99,3 +104,32 @@ export const dharmamAuditLog = pgTable('library_dharmam_audit_log', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 export type DharmamChapter = typeof dharmamChapters.$inferSelect;
+
+export const guruArulTopics = pgTable(
+  'library_guru_arul_topics',
+  {
+    id: text('id').primaryKey(),
+    title: text('title').notNull(),
+    english: text('english').notNull().default(''),
+    quotes: jsonb('quotes').$type<GuruArulEntry[]>().notNull().default([]),
+    sortOrder: integer('sort_order').notNull().default(0),
+    status: text('status', { enum: ['draft', 'published', 'archived'] })
+      .notNull()
+      .default('draft'),
+    revision: integer('revision').notNull().default(1),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index('library_guru_arul_status_order_idx').on(t.status, t.sortOrder)],
+);
+
+// Retain the ID and snapshot even after the topic is deleted.
+export const guruArulAuditLog = pgTable('library_guru_arul_audit_log', {
+  id: text('id').primaryKey(),
+  adminId: text('admin_id').references(() => admins.id),
+  topicId: text('topic_id').notNull(),
+  action: text('action').notNull(),
+  snapshot: jsonb('snapshot').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
+export type GuruArulTopic = typeof guruArulTopics.$inferSelect;

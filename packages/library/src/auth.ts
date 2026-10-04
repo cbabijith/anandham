@@ -1,5 +1,5 @@
 import { randomBytes, scryptSync, timingSafeEqual, createHash, randomUUID } from 'node:crypto';
-import { and, eq, gt, lt, sql } from 'drizzle-orm';
+import { and, eq, gt, isNull, lt, sql } from 'drizzle-orm';
 import { getDb } from './db';
 import { admins, sessions, loginLimits } from './schema';
 import { LibraryError } from './repository';
@@ -9,8 +9,8 @@ export function hashPassword(password: string) {
   return `${salt}:${scryptSync(password, salt, 64).toString('hex')}`;
 }
 export function verifyPassword(password: string, encoded: string) {
+  if (!/^[a-f0-9]{32}:[a-f0-9]{128}$/.test(encoded)) return false;
   const [salt, key] = encoded.split(':');
-  if (!salt || !key || key.length !== 128) return false;
   return timingSafeEqual(scryptSync(password, salt, 64), Buffer.from(key, 'hex'));
 }
 const digest = (value: string) => createHash('sha256').update(value).digest('hex');
@@ -31,30 +31,40 @@ export async function authenticate(email: string, password: string) {
     .returning();
   if (limit.attempts > 10)
     throw new LibraryError('Too many attempts. Please try again in 15 minutes.', 429);
-  const [admin] = await db
-    .select()
-    .from(admins)
-    .where(eq(admins.email, email.toLowerCase().trim()))
-    .limit(1);
-  const valid = verifyPassword(password, admin?.passwordHash ?? dummyPassword);
-  if (!admin || !valid) throw new LibraryError('Incorrect email or password.', 401);
-  const token = randomBytes(32).toString('hex');
-  await db.delete(sessions).where(lt(sessions.expiresAt, new Date()));
-  await db.insert(sessions).values({
-    tokenHash: digest(token),
-    adminId: admin.id,
-    expiresAt: new Date(Date.now() + 8 * 60 * 60 * 1000),
+  return db.transaction(async (tx) => {
+    const [admin] = await tx
+      .select()
+      .from(admins)
+      .where(eq(admins.email, email.toLowerCase().trim()))
+      .limit(1)
+      .for('update');
+    const valid = verifyPassword(password, admin?.passwordHash ?? dummyPassword);
+    if (!admin || !valid || admin.disabledAt)
+      throw new LibraryError('Incorrect email or password.', 401);
+    const token = randomBytes(32).toString('hex');
+    await tx.delete(sessions).where(lt(sessions.expiresAt, new Date()));
+    await tx.insert(sessions).values({
+      tokenHash: digest(token),
+      adminId: admin.id,
+      expiresAt: new Date(Date.now() + 8 * 60 * 60 * 1000),
+    });
+    await tx.delete(loginLimits).where(eq(loginLimits.key, key));
+    return token;
   });
-  await db.delete(loginLimits).where(eq(loginLimits.key, key));
-  return token;
 }
 export async function getAdmin(token?: string) {
   if (!token || !/^[a-f0-9]{64}$/.test(token)) return null;
   const [session] = await getDb()
-    .select({ id: admins.id, email: admins.email })
+    .select({ id: admins.id, email: admins.email, role: admins.role })
     .from(sessions)
     .innerJoin(admins, eq(admins.id, sessions.adminId))
-    .where(and(eq(sessions.tokenHash, digest(token)), gt(sessions.expiresAt, new Date())))
+    .where(
+      and(
+        eq(sessions.tokenHash, digest(token)),
+        gt(sessions.expiresAt, new Date()),
+        isNull(admins.disabledAt),
+      ),
+    )
     .limit(1);
   return session ?? null;
 }
@@ -72,6 +82,7 @@ export async function bootstrapAdmin(email: string, password: string) {
       id: randomUUID(),
       email: email.toLowerCase().trim(),
       passwordHash: hashPassword(password),
+      role: 'owner',
     })
     .onConflictDoNothing({ target: admins.email });
 }

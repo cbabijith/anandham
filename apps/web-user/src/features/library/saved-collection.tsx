@@ -3,11 +3,19 @@ import Link from 'next/link';
 import { Bookmark, X } from 'lucide-react';
 import type { KrithiSummary } from '@anandham/library/schema';
 import type { DharmamSummary } from '@anandham/library/dharmam-repository';
-import { guruArulQuotes } from '@anandham/library/guru-arul';
+import type { GuruArulQuote } from '@anandham/library/guru-arul';
 import { useBookmarks } from '../preferences/preferences';
 type Work = Omit<KrithiSummary, 'createdAt' | 'updatedAt'>;
 type Chapter = Omit<DharmamSummary, 'createdAt' | 'updatedAt'>;
-export function SavedCollection({ works, chapters }: { works: Work[]; chapters: Chapter[] }) {
+export function SavedCollection({
+  works,
+  chapters,
+  quotes: guruArulQuotes,
+}: {
+  works: Work[];
+  chapters: Chapter[];
+  quotes: GuruArulQuote[];
+}) {
   const krithis = useBookmarks();
   const dharmam = useBookmarks('anandham-dharmam-bookmarks');
   const arul = useBookmarks('anandham-guru-arul-bookmarks');

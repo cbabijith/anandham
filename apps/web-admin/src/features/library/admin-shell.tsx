@@ -12,16 +12,20 @@ import {
   Moon,
   Menu,
   X,
+  Users,
+  Quote,
 } from 'lucide-react';
 import { useTheme } from '@/components/providers/theme-provider';
 export function AdminShell({
   children,
   email,
   readerUrl,
+  role,
 }: {
   children: React.ReactNode;
   email: string;
   readerUrl: string;
+  role: 'owner' | 'editor';
 }) {
   const path = usePathname();
   const router = useRouter();
@@ -74,6 +78,22 @@ export function AdminShell({
           >
             <BookOpen size={18} /> Sree Narayana Dharmam
           </Link>
+          <Link
+            href="/library/guru-arul"
+            onClick={() => setOpen(false)}
+            className={path.startsWith('/library/guru-arul') ? 'active' : ''}
+          >
+            <Quote size={18} /> Guru Arul
+          </Link>
+          {role === 'owner' && (
+            <Link
+              href="/library/team"
+              onClick={() => setOpen(false)}
+              className={path.startsWith('/library/team') ? 'active' : ''}
+            >
+              <Users size={18} /> Team members
+            </Link>
+          )}
           <a href={readerUrl} target="_blank" rel="noreferrer">
             <ExternalLink size={18} /> Open reader website
           </a>
@@ -81,7 +101,7 @@ export function AdminShell({
         <div className="la-sidebar-bottom">
           <span className="la-avatar">A</span>
           <div>
-            <strong>Library administrator</strong>
+            <strong>{role === 'owner' ? 'Library owner' : 'Library editor'}</strong>
             <small>{email}</small>
           </div>
         </div>
@@ -107,9 +127,13 @@ export function AdminShell({
             <strong>
               {path === '/library'
                 ? 'Overview'
-                : path.startsWith('/library/dharmam')
-                  ? 'Dharmam'
-                  : 'Krithis'}
+                : path.startsWith('/library/guru-arul')
+                  ? 'Guru Arul'
+                  : path.startsWith('/library/team')
+                    ? 'Team'
+                    : path.startsWith('/library/dharmam')
+                      ? 'Dharmam'
+                      : 'Krithis'}
             </strong>
           </span>
           <div>

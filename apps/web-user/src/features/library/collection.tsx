@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ArrowUpRight, Bookmark, Search, X, BookOpen, ArrowRight } from 'lucide-react';
 import type { KrithiSummary } from '@anandham/library/schema';
 import { categories, normalizeSearch } from '@anandham/library/catalogue';
+import { CategoryChips } from './category-chips';
 import { useBookmarks, usePreference } from '../preferences/preferences';
 type Entry = Omit<KrithiSummary, 'createdAt' | 'updatedAt'>;
 export function Collection({ works }: { works: Entry[] }) {
@@ -79,24 +80,19 @@ export function Collection({ works }: { works: Entry[] }) {
           <span>{bookmarks.length}</span>
         </button>
       </div>
-      <div className="krithi-filters">
-        <label htmlFor="krithi-category">
-          <span lang="ml">വിഭാഗം · </span>Category
-        </label>
-        <select
-          id="krithi-category"
-          aria-label="Filter by category"
-          value={category}
-          onChange={(event) => setCategory(event.target.value)}
-        >
-          <option value="">എല്ലാ കൃതികളും · All works</option>
-          {categories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.malayalam} · {c.name}
-            </option>
-          ))}
-        </select>
-      </div>
+      <CategoryChips
+        label="Filter Krithis by category"
+        allLabel="All works"
+        total={works.length}
+        options={categories.map((entry) => ({
+          id: entry.id,
+          title: entry.malayalam,
+          english: entry.name,
+          count: works.filter((work) => work.category === entry.id).length,
+        }))}
+        value={category}
+        onChange={setCategory}
+      />
       <div className="results-bar">
         <p role="status">
           {filtered.length} {filtered.length === 1 ? 'work' : 'works'}
